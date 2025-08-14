@@ -74,7 +74,7 @@ func UpdatePayUpstreamValidator(param dto.UpdatePayUpstreamRequest) error {
 		return errors.New("请选择AppId")
 	}
 
-	if param.PayKey == "" {
+	if param.PayAPI == "" {
 		return errors.New("请选择代收下单API")
 	}
 

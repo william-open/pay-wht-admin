@@ -117,6 +117,7 @@ func (s *MerchantService) UpdateMerchantWhitelist(param dto.SaveMerchantWhitelis
 	return dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
 		ApiIp:      param.ApiIp,
 		LoginApiIp: param.LoginApiIp,
+		ApiDomain:  param.ApiDomain,
 	}).Error
 }
 

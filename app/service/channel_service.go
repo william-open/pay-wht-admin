@@ -134,3 +134,12 @@ func (s *ChannelService) GetAllDropDownList(param dto.QueryChannelByStatusReques
 
 	return channelList
 }
+
+// 更新通道状态
+func (s *ChannelService) UpdateChannelStatus(param dto.SaveChannelStatus) error {
+	return dal.Gorm.Model(&model.WChannel{}).
+		Where("id = ?", param.Id).
+		Updates(map[string]interface{}{
+			"status": param.Status,
+		}).Error
+}

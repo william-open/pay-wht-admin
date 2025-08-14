@@ -46,6 +46,11 @@ func (s *PayUpstreamService) CreatePayUpstream(param dto.SavePayUpstream) error 
 		IPWhiteList:    param.IPWhiteList,
 		CallbackDomain: param.CallbackDomain,
 		Remark:         param.Remark,
+		Currency:       param.Currency,
+		ChannelCode:    param.ChannelCode,
+		Md5Key:         param.Md5Key,
+		RsaPrivateKey:  param.RsaPrivateKey,
+		RsaPublicKey:   param.RsaPublicKey,
 	}
 
 	if err := tx.Model(model.WPayUpstream{}).Create(&payUpstream).Error; err != nil {
@@ -94,6 +99,11 @@ func (s *PayUpstreamService) UpdatePayUpstream(param dto.SavePayUpstream) error 
 		IPWhiteList:    param.IPWhiteList,
 		CallbackDomain: param.CallbackDomain,
 		Remark:         param.Remark,
+		Currency:       param.Currency,
+		ChannelCode:    param.ChannelCode,
+		Md5Key:         param.Md5Key,
+		RsaPrivateKey:  param.RsaPrivateKey,
+		RsaPublicKey:   param.RsaPublicKey,
 	}).Error; err != nil {
 		tx.Rollback()
 		return err
@@ -108,25 +118,29 @@ func (s *PayUpstreamService) GetPayUpstreamList(param dto.PayUpstreamListRequest
 	var count int64
 	channels := make([]dto.PayUpstreamListResponse, 0)
 
-	query := dal.Gorm.Model(model.WPayUpstream{}).Order("id desc")
-
+	query := dal.Gorm.Table("w_pay_upstream AS a").
+		Select("a.*,b.country").Joins("LEFT JOIN w_currency_code AS b ON a.currency = b.code")
 	if param.Keyword != "" {
-		query.Where("title LIKE ? OR account LIKE ? OR appid LIKE ?", "%"+param.Title+"%", "%"+param.Account+"%", "%"+param.AppID+"%")
+		query.Where("a.title LIKE ? OR a.account LIKE ? OR a.app_id LIKE ?", "%"+param.Keyword+"%", "%"+param.Keyword+"%", "%"+param.Keyword+"%")
 	}
 
 	if param.Status != "" {
-		query.Where("status = ?", param.Status)
+		query.Where("a.status = ?", param.Status)
 	}
 
 	if param.Type > 0 {
-		query.Where("type = ?", param.Type)
+		query.Where("a.type = ?", param.Type)
+	}
+
+	if param.Currency != "" {
+		query.Where("a.currency = ?", param.Currency)
 	}
 
 	if isPaging {
 		query.Count(&count).Offset((param.PageNum - 1) * param.PageSize).Limit(param.PageSize)
 	}
 
-	query.Find(&channels)
+	query.Order("a.id desc").Find(&channels)
 
 	return channels, int(count)
 }
@@ -134,11 +148,11 @@ func (s *PayUpstreamService) GetPayUpstreamList(param dto.PayUpstreamListRequest
 // 获取上游供应商详情
 func (s *PayUpstreamService) GetPayUpstreamById(id int) dto.PayUpstreamDetailResponse {
 
-	var country dto.PayUpstreamDetailResponse
+	var upstream dto.PayUpstreamDetailResponse
 
-	dal.Gorm.Model(model.WPayUpstream{}).Where("id = ?", id).Last(&country)
+	dal.Gorm.Model(model.WPayUpstream{}).Where("id = ?", id).Last(&upstream)
 
-	return country
+	return upstream
 }
 
 // 根据上游供应商名称查询上游供应商
@@ -182,7 +196,7 @@ func (s *PayUpstreamService) GetUpstreamChannelList(param dto.PayUpstreamListReq
 	query := dal.Gorm.Model(model.WPayUpstream{}).Order("id desc")
 
 	if param.Keyword != "" {
-		query.Where("title LIKE ? OR account LIKE ? OR appid LIKE ?", "%"+param.Title+"%", "%"+param.Account+"%", "%"+param.AppID+"%")
+		query.Where("title LIKE ? OR account LIKE ? OR appid LIKE ?", "%"+param.Keyword+"%", "%"+param.Keyword+"%", "%"+param.Keyword+"%")
 	}
 
 	if param.Status != "" {

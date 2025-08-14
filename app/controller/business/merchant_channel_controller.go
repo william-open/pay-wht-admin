@@ -30,9 +30,9 @@ func (*MerchantChannelController) List(ctx *gin.Context) {
 // Detail 商户通道详情
 func (*MerchantChannelController) Detail(ctx *gin.Context) {
 
-	merchantId, _ := strconv.Atoi(ctx.Param("merchantId"))
+	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	merchant := (&service.MerchantService{}).GetMerchantByMerchantId(merchantId)
+	merchant := (&service.MerchantChannelService{}).GetMerchantByMerchantChannelId(id)
 
 	response.NewSuccess().SetData("data", merchant).Json(ctx)
 }

@@ -3,7 +3,7 @@ package dto
 // 供应商通道列表
 type PayUpstreamProductListResponse struct {
 	Id           int     `json:"id"`
-	UpstreamId   int64   `json:"UpstreamId"` // 上游供应商ID
+	UpstreamId   int64   `json:"upstreamId"` // 上游供应商ID
 	Title        string  `json:"title"`
 	SysChannelId string  `json:"sysChannelId"`
 	UpstreamCode string  `json:"upstreamCode"`
@@ -15,14 +15,16 @@ type PayUpstreamProductListResponse struct {
 	SuccessRate  float64 `json:"successRate"`
 	OrderRange   string  `json:"orderRange"`
 	Remark       string  `json:"remark"` // 备注
+	Coding       string  `json:"coding"` // 系统通道编码
+	Type         string  `json:"type"`   // 通道类型
 }
 
 // 供应商通道详情
 type PayUpstreamProductDetailResponse struct {
 	Id           int     `json:"id"`
-	UpstreamId   int64   `json:"UpstreamId"` // 上游供应商ID
+	UpstreamId   int64   `json:"upstreamId"` // 上游供应商ID
 	Title        string  `json:"title"`
-	ChannelCode  string  `json:"channelCode"`
+	SysChannelId int64   `json:"sysChannelId"`
 	UpstreamCode string  `json:"upstreamCode"`
 	Status       int8    `json:"status"`
 	DefaultRate  float64 `json:"defaultRate"`

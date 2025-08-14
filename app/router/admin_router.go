@@ -199,7 +199,7 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.GET("/business/channel/:id", middleware.HasPerm("business:channel:query"), (&businesscontroller.ChannelController{}).Detail)                                      // 获取通道详情
 	api.POST("/business/channel", middleware.HasPerm("business:channel:add"), middleware.OperLogMiddleware("新增通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.ChannelController{}).Create)
 	api.PUT("/business/channel", middleware.HasPerm("business:channel:edit"), middleware.OperLogMiddleware("更新通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.ChannelController{}).Update)
-	api.PUT("/business/channel/changeStatus", middleware.HasPerm("business:channel:edit"), middleware.OperLogMiddleware("修改通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.ChannelController{}).ChangeStatus)
+	api.PUT("/business/channel/changeStatus", middleware.HasPerm("business:channel:changeStatus"), middleware.OperLogMiddleware("修改通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.ChannelController{}).ChangeStatus)
 
 	// 通道供应商功能路由
 	api.GET("/business/upstream/channelList", middleware.HasPerm("business:upstream:channelList"), (&businesscontroller.PayUpstreamController{}).GetUpChannelList)              // 查询上游供应商通道

@@ -33,9 +33,9 @@ func (*PayUpstreamController) Detail(ctx *gin.Context) {
 
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	channel := (&service.PayUpstreamService{}).GetPayUpstreamById(id)
+	detail := (&service.PayUpstreamService{}).GetPayUpstreamById(id)
 
-	response.NewSuccess().SetData("data", channel).Json(ctx)
+	response.NewSuccess().SetData("data", detail).Json(ctx)
 }
 
 // 新增通道供应商
@@ -87,9 +87,14 @@ func (*PayUpstreamController) Create(ctx *gin.Context) {
 		Supplementary:  param.Supplementary,
 		Documentation:  param.Documentation,
 		NeedQuery:      param.NeedQuery,
-		IPWhiteList:    param.IPWhiteList,
+		IPWhiteList:    param.IpWhiteList,
 		CallbackDomain: param.CallbackDomain,
 		Remark:         param.Remark,
+		Currency:       param.Currency,
+		ChannelCode:    param.ChannelCode,
+		Md5Key:         param.Md5Key,
+		RsaPublicKey:   param.RsaPublicKey,
+		RsaPrivateKey:  param.RsaPrivateKey,
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
@@ -113,13 +118,13 @@ func (*PayUpstreamController) Update(ctx *gin.Context) {
 		return
 	}
 
-	if upstream := (&service.PayUpstreamService{}).GetPayUpstreamByTitle(param.Title); upstream.Id > 0 {
-		response.NewError().SetMsg("新增通道供应商" + param.Title + "失败，上游名称已存在").Json(ctx)
+	if upstream := (&service.PayUpstreamService{}).GetPayUpstreamByTitle(param.Title); upstream.Id != param.Id {
+		response.NewError().SetMsg("更新通道供应商" + param.Title + "失败，上游名称已存在").Json(ctx)
 		return
 	}
 
-	if upstream := (&service.PayUpstreamService{}).GetPayUpstreamByAccount(param.Account); upstream.Id > 0 {
-		response.NewError().SetMsg("新增通道供应商" + param.Account + "失败，上游商户号已存在").Json(ctx)
+	if upstream := (&service.PayUpstreamService{}).GetPayUpstreamByAccount(param.Account); upstream.Id != param.Id {
+		response.NewError().SetMsg("更新通道供应商" + param.Account + "失败，上游商户号已存在").Json(ctx)
 		return
 	}
 
@@ -146,9 +151,14 @@ func (*PayUpstreamController) Update(ctx *gin.Context) {
 		Supplementary:  param.Supplementary,
 		Documentation:  param.Documentation,
 		NeedQuery:      param.NeedQuery,
-		IPWhiteList:    param.IPWhiteList,
+		IPWhiteList:    param.IpWhiteList,
 		CallbackDomain: param.CallbackDomain,
 		Remark:         param.Remark,
+		Currency:       param.Currency,
+		ChannelCode:    param.ChannelCode,
+		Md5Key:         param.Md5Key,
+		RsaPublicKey:   param.RsaPublicKey,
+		RsaPrivateKey:  param.RsaPrivateKey,
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return

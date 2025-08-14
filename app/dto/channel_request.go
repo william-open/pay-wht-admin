@@ -2,18 +2,24 @@ package dto
 
 // 保存通道
 type SaveChannel struct {
-	Id          int    `json:"id"`
-	Title       string `json:"title"`
-	Status      int    `json:"status"`
-	Max         string `json:"max"`
-	Min         string `json:"min"`
-	DefaultRate int    `json:"defaultRate"`
-	Coding      string `json:"coding"`
-	AddRate     int    `json:"addRate"`
-	Type        int    `json:"type"`
-	Charge      int    `json:"charge"`
-	Currency    string `json:"currency"`
-	Remark      string `json:"remark"`
+	Id          int     `json:"id"`
+	Title       string  `json:"title"`
+	Status      int     `json:"status"`
+	Max         string  `json:"max"`
+	Min         string  `json:"min"`
+	DefaultRate float64 `json:"defaultRate"`
+	Coding      string  `json:"coding"`
+	AddRate     float64 `json:"addRate"`
+	Type        int     `json:"type"`
+	Charge      int     `json:"charge"`
+	Currency    string  `json:"currency"`
+	Remark      string  `json:"remark"`
+}
+
+// 保存通道状态
+type SaveChannelStatus struct {
+	Id     int `json:"id"`
+	Status int `json:"status"`
 }
 
 // 通道列表
@@ -27,33 +33,39 @@ type ChannelListRequest struct {
 
 // 新增通道
 type CreateChannelRequest struct {
-	Title       string `json:"title"`
-	Status      int    `json:"status"`
-	Max         string `json:"max"`
-	Min         string `json:"min"`
-	DefaultRate int    `json:"default_rate"`
-	Coding      string `json:"coding"`
-	AddRate     int    `json:"add_rate"`
-	Type        int    `json:"type"`
-	Charge      int    `json:"charge"`
-	Currency    string `json:"currency"`
-	Remark      string `json:"remark"`
+	Title       string  `json:"title"`
+	Status      int     `json:"status"`
+	Max         string  `json:"max"`
+	Min         string  `json:"min"`
+	DefaultRate float64 `json:"default_rate"`
+	Coding      string  `json:"coding"`
+	AddRate     float64 `json:"add_rate"`
+	Type        int     `json:"type"`
+	Charge      int     `json:"charge"`
+	Currency    string  `json:"currency"`
+	Remark      string  `json:"remark"`
 }
 
 // 更新通道
 type UpdateChannelRequest struct {
-	Id          int    `json:"id"`
-	Title       string `json:"title"`
-	Status      int    `json:"status"`
-	Max         string `json:"max"`
-	Min         string `json:"min"`
-	DefaultRate int    `json:"default_rate"`
-	Coding      string `json:"coding"`
-	AddRate     int    `json:"add_rate"`
-	Type        int    `json:"type"`
-	Charge      int    `json:"charge"`
-	Currency    string `json:"currency"`
-	Remark      string `json:"remark"`
+	Id          int     `json:"id"`
+	Title       string  `json:"title"`
+	Status      int     `json:"status"`
+	Max         string  `json:"max"`
+	Min         string  `json:"min"`
+	DefaultRate float64 `json:"defaultRate"`
+	Coding      string  `json:"coding"`
+	AddRate     float64 `json:"addRate"`
+	Type        int     `json:"type"`
+	Charge      int     `json:"charge"`
+	Currency    string  `json:"currency"`
+	Remark      string  `json:"remark"`
+}
+
+// 更新状态
+type UpdateChannelStatusRequest struct {
+	Id     int `json:"id"`
+	Status int `json:"status"`
 }
 
 // 根据状态查询通道

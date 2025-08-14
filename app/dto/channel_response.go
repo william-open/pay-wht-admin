@@ -30,9 +30,9 @@ type ChannelDetailResponse struct {
 	Status      string `json:"status"`
 	Max         string `json:"max"`
 	Min         string `json:"min"`
-	DefaultRate string `json:"default_rate"`
+	DefaultRate string `json:"defaultRate"`
 	Coding      string `json:"coding"`
-	AddRate     string `json:"add_rate"`
+	AddRate     string `json:"addRate"`
 	Type        int    `json:"type"`
 	Charge      int    `json:"charge"`
 	Currency    string `json:"currency"`

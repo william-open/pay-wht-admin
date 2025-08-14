@@ -64,22 +64,24 @@ func (s *UpstreamProductService) GetPayUpstreamProductList(param dto.PayUpstream
 	var count int64
 	channels := make([]dto.PayUpstreamProductListResponse, 0)
 
-	query := dal.Gorm.Model(model.WPayUpstreamProduct{}).Order("id desc")
+	query := dal.Gorm.Table("w_pay_upstream_product AS a").
+		Select("a.*,b.coding,b.type").
+		Joins("LEFT JOIN w_pay_way AS b ON a.sys_channel_id = b.id")
 
-	query.Where("upstream_id = ?", param.UpstreamId)
+	query.Where("a.upstream_id = ?", param.UpstreamId)
 	if param.Keyword != "" {
-		query.Where("title LIKE ? OR currency LIKE ? OR upstream_code LIKE ?", "%"+param.Title+"%", "%"+param.Currency+"%", "%"+param.UpstreamCode+"%")
+		query.Where("a.title LIKE ? OR a.currency LIKE ? OR a.upstream_code LIKE ?", "%"+param.Title+"%", "%"+param.Currency+"%", "%"+param.UpstreamCode+"%")
 	}
 
 	if param.Status != "" {
-		query.Where("status = ?", param.Status)
+		query.Where("a.status = ?", param.Status)
 	}
 
 	if isPaging {
 		query.Count(&count).Offset((param.PageNum - 1) * param.PageSize).Limit(param.PageSize)
 	}
 
-	query.Find(&channels)
+	query.Order("a.id desc").Find(&channels)
 
 	return channels, int(count)
 }

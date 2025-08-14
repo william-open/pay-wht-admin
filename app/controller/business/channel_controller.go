@@ -128,7 +128,7 @@ func (*ChannelController) Update(ctx *gin.Context) {
 // 修改通道状态
 func (*ChannelController) ChangeStatus(ctx *gin.Context) {
 
-	var param dto.UpdateChannelRequest
+	var param dto.UpdateChannelStatusRequest
 
 	if err := ctx.ShouldBind(&param); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
@@ -139,7 +139,7 @@ func (*ChannelController) ChangeStatus(ctx *gin.Context) {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
-	if err := (&service.ChannelService{}).UpdateChannel(dto.SaveChannel{
+	if err := (&service.ChannelService{}).UpdateChannelStatus(dto.SaveChannelStatus{
 		Id:     param.Id,
 		Status: param.Status,
 	}); err != nil {

@@ -67,8 +67,8 @@ type UpstreamProductRequest struct {
 	UpstreamId   int64  `query:"upstreamId" form:"upstreamId"` // 上游供应商ID
 	SysChannelId string `query:"sysChannelId" form:"sysChannelId"`
 	Status       int8   `query:"status" form:"status"`
-	Currency     string `query:"currency" form:"currency"`         // 货币符号
-	UpstreamCode string `query:"upstreamCode" form:"upstreamCode"` // 上游通道产品编码
+	Currency     string `query:"currency" form:"currency"` // 货币符号
+	Keyword      string `query:"keyword" form:"keyword"`   // 关键字
 }
 
 // 供应商通道产品是否存在

@@ -54,7 +54,7 @@ func UpdateChannelValidator(param dto.UpdateChannelRequest) error {
 }
 
 // 修改通道状态验证
-func ChangeChannelStatusValidator(param dto.UpdateChannelRequest) error {
+func ChangeChannelStatusValidator(param dto.UpdateChannelStatusRequest) error {
 
 	if param.Id <= 0 {
 		return errors.New("参数错误")
