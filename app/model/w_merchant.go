@@ -19,14 +19,23 @@ type WMerchant struct {
 	PrivateKey        string
 	AppId             string
 	ApiKey            string
+	ApiIp             string
+	LoginApiIp        string
+	ApiDomain         string
 	Balance           decimal.Decimal
 	Status            string `gorm:"default:0"`
+	PayType           string `gorm:"default:1"`
+	userType          string `gorm:"default:1"`
 	CreateBy          string
 	CreateTime        datetime.Datetime `gorm:"autoCreateTime"`
 	UpdateBy          string
 	UpdateTime        datetime.Datetime `gorm:"autoUpdateTime"`
 	DeleteTime        gorm.DeletedAt
 	Remark            string
+	UpstreamId        string
+	Ways              string
+	UserType          string
+	PId               int64
 }
 
 func (WMerchant) TableName() string {

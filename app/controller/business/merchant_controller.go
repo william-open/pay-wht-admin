@@ -3,6 +3,7 @@ package businesscontroller
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"gorm.io/datatypes"
 	"math/rand"
 	"ruoyi-go/app/dto"
 	"ruoyi-go/app/security"
@@ -33,6 +34,13 @@ func (*MerchantController) List(ctx *gin.Context) {
 
 	list, total := (&service.MerchantService{}).GetMerchantList(param, true)
 	response.NewSuccess().SetPageData(list, total).Json(ctx)
+}
+
+// DropDownList 商户下拉列表
+func (*MerchantController) DropDownList(ctx *gin.Context) {
+
+	list := (&service.MerchantService{}).GetDropDownList()
+	response.NewSuccess().SetData("data", list).Json(ctx)
 }
 
 // 商户详情
@@ -75,21 +83,27 @@ func (*MerchantController) Create(ctx *gin.Context) {
 		response.NewError().SetMsg("新增商户失败,RSA创建失败").Json(ctx)
 		return
 	}
-
+	emptyJson := datatypes.JSON([]byte("{}"))
+	param.UpstreamId = string(emptyJson)
+	param.Ways = string(emptyJson)
 	merchantId, err := (&service.MerchantService{}).CreateMerchant(dto.SaveMerchant{
 		Username:          param.Username,
 		Password:          password.Generate(param.Password),
 		Nickname:          param.Nickname,
 		CallbackSecretKey: param.CallbackSecretKey,
-		NotifyUrl:         param.NotifyUrl,
-		AesSecretKey:      aesSecretKey,
-		PublicKey:         publicPEM,
-		PrivateKey:        privatePEM,
-		ApiKey:            utils.GenerateApiKey(),
-		AppId:             GenerateUniqueMerchantCode("80"),
-		Status:            param.Status,
-		CreateBy:          security.GetAuthUserName(ctx),
-		Remark:            param.Remark,
+		//NotifyUrl:         param.NotifyUrl,
+		AesSecretKey: aesSecretKey,
+		PublicKey:    publicPEM,
+		PrivateKey:   privatePEM,
+		ApiKey:       utils.GenerateApiKey(),
+		AppId:        GenerateUniqueMerchantCode("80"),
+		Status:       param.Status,
+		CreateBy:     security.GetAuthUserName(ctx),
+		PayType:      param.PayType,
+		UserType:     param.UserType,
+		Remark:       param.Remark,
+		UpstreamId:   param.UpstreamId,
+		Ways:         param.Ways,
 	})
 	if err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
@@ -149,15 +163,15 @@ func (*MerchantController) Update(ctx *gin.Context) {
 	}
 
 	if err := (&service.MerchantService{}).UpdateMerchant(dto.SaveMerchant{
-		MId:               param.MId,
-		Username:          param.Username,
-		Password:          editPassword,
-		Nickname:          param.Nickname,
-		CallbackSecretKey: param.CallbackSecretKey,
-		NotifyUrl:         param.NotifyUrl,
-		Remark:            param.Remark,
-		Status:            param.Status,
-		UpdateBy:          security.GetAuthUserName(ctx),
+		MId:      param.MId,
+		Username: param.Username,
+		Password: editPassword,
+		Nickname: param.Nickname,
+		//CallbackSecretKey: param.CallbackSecretKey,
+		//NotifyUrl:         param.NotifyUrl,
+		Remark:   param.Remark,
+		Status:   param.Status,
+		UpdateBy: security.GetAuthUserName(ctx),
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
@@ -206,4 +220,32 @@ func GenerateUniqueMerchantCode(prefix string) string {
 			return code
 		}
 	}
+}
+
+// 更新白名单 Whitelist
+func (*MerchantController) Whitelist(ctx *gin.Context) {
+
+	var param dto.UpdateWhitelistRequest
+
+	if err := ctx.ShouldBind(&param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := validator.UpdateMerchantWhitelistValidator(param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := (&service.MerchantService{}).UpdateMerchantWhitelist(dto.SaveMerchantWhitelist{
+		MId:        param.MId,
+		ApiIp:      param.ApiIp,
+		LoginApiIp: param.LoginApiIp,
+		ApiDomain:  param.ApiDomain,
+	}); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	response.NewSuccess().Json(ctx)
 }

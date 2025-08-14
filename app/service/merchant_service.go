@@ -25,6 +25,10 @@ func (s *MerchantService) CreateMerchant(param dto.SaveMerchant) (int, error) {
 		Status:            param.Status,
 		CreateBy:          param.CreateBy,
 		Remark:            param.Remark,
+		UpstreamId:        param.UpstreamId,
+		Ways:              param.Ways,
+		UserType:          param.UserType,
+		PayType:           param.PayType,
 	}
 
 	result := dal.Gorm.Model(model.WMerchant{}).Create(m)
@@ -50,6 +54,8 @@ func (s *MerchantService) UpdateMerchant(param dto.SaveMerchant) error {
 		Status:            param.Status,
 		UpdateBy:          param.UpdateBy,
 		Remark:            param.Remark,
+		UserType:          param.UserType,
+		PayType:           param.PayType,
 	}).Error
 }
 
@@ -60,6 +66,7 @@ func (s *MerchantService) GetMerchantList(param dto.MerchantListRequest, isPagin
 
 	query := dal.Gorm.Model(model.WMerchant{}).Order("w_merchant.m_id desc")
 
+	query.Where("user_type = ?", 1)
 	if param.MerchantName != "" {
 		query.Where("username LIKE ?", "%"+param.MerchantName+"%")
 	}
@@ -102,4 +109,24 @@ func (s *MerchantService) GetMerchantByAppId(appId string) int64 {
 	dal.Gorm.Model(model.WMerchant{}).Where("app_id = ?", appId).Count(&count)
 
 	return count
+}
+
+// UpdateMerchantWhitelist 更新商户白名单
+func (s *MerchantService) UpdateMerchantWhitelist(param dto.SaveMerchantWhitelist) error {
+
+	return dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
+		ApiIp:      param.ApiIp,
+		LoginApiIp: param.LoginApiIp,
+	}).Error
+}
+
+// GetDropDownList 商户下拉列表
+func (s *MerchantService) GetDropDownList() []dto.MerchantDropDownListResponse {
+	merchantList := make([]dto.MerchantDropDownListResponse, 0)
+
+	query := dal.Gorm.Model(model.WMerchant{}).Where("status = ?", 1).Where("user_type = ?", 1).Order("w_merchant.m_id desc")
+
+	query.Find(&merchantList)
+
+	return merchantList
 }

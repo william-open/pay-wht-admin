@@ -130,12 +130,34 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.DELETE("/monitor/operlog/clean", middleware.HasPerm("monitor:operlog:remove"), middleware.OperLogMiddleware("清空操作日志", constant.REQUEST_BUSINESS_TYPE_DELETE), (&monitorcontroller.OperlogController{}).Clean)
 	api.POST("/monitor/operlog/export", middleware.HasPerm("monitor:operlog:export"), middleware.OperLogMiddleware("导出操作日志", constant.REQUEST_BUSINESS_TYPE_EXPORT), (&monitorcontroller.OperlogController{}).Export)
 
-	// 业务功能路由
-	api.GET("/business/merchant/list", middleware.HasPerm("business:merchant:list"), (&businesscontroller.MerchantController{}).List)           // 获取商户列表
-	api.GET("/business/merchant/:merchantId", middleware.HasPerm("business:merchant:query"), (&businesscontroller.MerchantController{}).Detail) // 获取商户详情
+	// 商户功能路由
+	api.GET("/business/merchant/dropDownList", middleware.HasPerm("business:merchant:dropDownList"), (&businesscontroller.MerchantController{}).DropDownList) // 获取下拉列表商户
+	api.GET("/business/merchant/list", middleware.HasPerm("business:merchant:list"), (&businesscontroller.MerchantController{}).List)                         // 获取商户列表
+	api.GET("/business/merchant/:merchantId", middleware.HasPerm("business:merchant:query"), (&businesscontroller.MerchantController{}).Detail)               // 获取商户详情
 	api.POST("/business/merchant", middleware.HasPerm("business:merchant:add"), middleware.OperLogMiddleware("新增商户", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantController{}).Create)
 	api.PUT("/business/merchant", middleware.HasPerm("business:merchant:edit"), middleware.OperLogMiddleware("更新商户", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Update)
+	api.PUT("/business/merchant/whitelist", middleware.HasPerm("business:merchant:whitelist"), middleware.OperLogMiddleware("更新白名单", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Whitelist)
 	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
+
+	// 商户账户功能路由
+	api.GET("/business/merchant_account/list", middleware.HasPerm("business:merchant_account:list"), (&businesscontroller.MerchantAccountController{}).List)                           // 获取商户账户列表
+	api.GET("/business/merchant_account_currency/list", middleware.HasPerm("business:merchant_account_currency:list"), (&businesscontroller.MerchantAccountController{}).CurrencyList) // 获取商户货币账户列表
+	api.GET("/business/merchant_account/:merchantId", middleware.HasPerm("business:merchant_account:query"), (&businesscontroller.MerchantAccountController{}).Detail)                 // 获取商户账户详情
+
+	// 代理功能路由
+	api.GET("/business/agent/list", middleware.HasPerm("business:agent:list"), (&businesscontroller.AgentController{}).List)        // 获取代理列表
+	api.GET("/business/agent/:agentId", middleware.HasPerm("business:agent:query"), (&businesscontroller.AgentController{}).Detail) // 获取代理详情
+	api.POST("/business/agent", middleware.HasPerm("business:agent:add"), middleware.OperLogMiddleware("新增代理", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.AgentController{}).Create)
+	api.PUT("/business/agent", middleware.HasPerm("business:agent:edit"), middleware.OperLogMiddleware("更新代理", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentController{}).Update)
+	api.PUT("/business/agent/whitelist", middleware.HasPerm("business:agent:whitelist"), middleware.OperLogMiddleware("更新白名单", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentController{}).Whitelist)
+	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
+
+	// 代理商户功能路由
+	api.GET("/agent/merchant/list", middleware.HasPerm("agent:merchant:list"), (&businesscontroller.AgentMController{}).List)         // 获取代理商户列表
+	api.GET("/agent/merchant/:agentMId", middleware.HasPerm("agent:merchant:query"), (&businesscontroller.AgentMController{}).Detail) // 获取代理商户详情
+	api.POST("/agent/merchant", middleware.HasPerm("agent:merchant:add"), middleware.OperLogMiddleware("新增代理商户", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.AgentMController{}).Create)
+	api.PUT("/agent/merchant", middleware.HasPerm("agent:merchant:edit"), middleware.OperLogMiddleware("更新代理商户", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentMController{}).Update)
+	api.DELETE("/agent/merchant/:agentMId", middleware.HasPerm("agent:merchant:remove"), middleware.OperLogMiddleware("删除代理商户", constant.REQUEST_BUSINESS_TYPE_DELETE), (&businesscontroller.AgentMController{}).Remove)
 
 	// 币种功能路由
 	api.GET("/business/currency/list", middleware.HasPerm("business:currency:list"), (&businesscontroller.CurrencyController{}).List)           // 获取币种列表
@@ -162,5 +184,52 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.POST("/business/collection_address", middleware.HasPerm("business:collection_address:add"), middleware.OperLogMiddleware("新增币种", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.CollectionAddressController{}).Create)
 	api.PUT("/business/collection_address", middleware.HasPerm("business:collection_address:edit"), middleware.OperLogMiddleware("更新币种", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.CollectionAddressController{}).Update)
 	api.DELETE("/business/collection_address/:id", middleware.HasPerm("business:collection_address:remove"), middleware.OperLogMiddleware("删除币种", constant.REQUEST_BUSINESS_TYPE_DELETE), (&businesscontroller.CollectionAddressController{}).Remove)
+
+	// 国家功能路由
+	api.GET("/business/country/list", middleware.HasPerm("business:country:list"), (&businesscontroller.CountryController{}).List)                                        // 获取国家列表
+	api.GET("/business/country/getAllListByStatus", middleware.HasPerm("business:country:getAllListByStatus"), (&businesscontroller.CountryController{}).GetListByStatus) // 通过状态获取国家
+	api.GET("/business/country/:id", middleware.HasPerm("business:country:query"), (&businesscontroller.CountryController{}).Detail)                                      // 获取国家详情
+	api.POST("/business/country", middleware.HasPerm("business:country:add"), middleware.OperLogMiddleware("新增国家", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.CountryController{}).Create)
+	api.PUT("/business/country", middleware.HasPerm("business:country:edit"), middleware.OperLogMiddleware("更新国家", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.CountryController{}).Update)
+	api.PUT("/business/country/changeStatus", middleware.HasPerm("business:country:edit"), middleware.OperLogMiddleware("修改国家状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.CountryController{}).ChangeStatus)
+
+	// 通道功能路由
+	api.GET("/business/channel/getAllListByStatus", middleware.HasPerm("business:channel:getAllListByStatus"), (&businesscontroller.ChannelController{}).GetListByStatus) // 通过状态获取系统通道
+	api.GET("/business/channel/list", middleware.HasPerm("business:channel:list"), (&businesscontroller.ChannelController{}).List)                                        // 获取通道列表
+	api.GET("/business/channel/:id", middleware.HasPerm("business:channel:query"), (&businesscontroller.ChannelController{}).Detail)                                      // 获取通道详情
+	api.POST("/business/channel", middleware.HasPerm("business:channel:add"), middleware.OperLogMiddleware("新增通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.ChannelController{}).Create)
+	api.PUT("/business/channel", middleware.HasPerm("business:channel:edit"), middleware.OperLogMiddleware("更新通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.ChannelController{}).Update)
+	api.PUT("/business/channel/changeStatus", middleware.HasPerm("business:channel:edit"), middleware.OperLogMiddleware("修改通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.ChannelController{}).ChangeStatus)
+
+	// 通道供应商功能路由
+	api.GET("/business/upstream/channelList", middleware.HasPerm("business:upstream:channelList"), (&businesscontroller.PayUpstreamController{}).GetUpChannelList)              // 查询上游供应商通道
+	api.GET("/business/upstream/getAllListByStatus", middleware.HasPerm("business:upstream:getAllListByStatus"), (&businesscontroller.PayUpstreamController{}).GetListByStatus) // 通过状态获取供应商
+	api.GET("/business/upstream/list", middleware.HasPerm("business:upstream:list"), (&businesscontroller.PayUpstreamController{}).List)                                        // 获取通道供应商列表
+	api.GET("/business/upstream/:id", middleware.HasPerm("business:upstream:query"), (&businesscontroller.PayUpstreamController{}).Detail)                                      // 获取通道供应商详情
+	api.POST("/business/upstream", middleware.HasPerm("business:upstream:add"), middleware.OperLogMiddleware("新增通道供应商", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.PayUpstreamController{}).Create)
+	api.PUT("/business/upstream", middleware.HasPerm("business:upstream:edit"), middleware.OperLogMiddleware("更新通道供应商", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.PayUpstreamController{}).Update)
+	api.PUT("/business/upstream/changeStatus", middleware.HasPerm("business:upstream:edit"), middleware.OperLogMiddleware("修改通道供应商状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.PayUpstreamController{}).ChangeStatus)
+
+	// 商户通道功能路由
+	api.GET("/merchant/channel/list", middleware.HasPerm("merchant:channel:list"), (&businesscontroller.MerchantChannelController{}).List)   // 获取商户通道列表
+	api.GET("/merchant/channel/:id", middleware.HasPerm("merchant:channel:query"), (&businesscontroller.MerchantChannelController{}).Detail) // 获取商户通道详情
+	api.POST("/merchant/channel", middleware.HasPerm("merchant:channel:add"), middleware.OperLogMiddleware("新增商户通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantChannelController{}).Create)
+	api.PUT("/merchant/channel", middleware.HasPerm("merchant:channel:edit"), middleware.OperLogMiddleware("更新商户通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).Update)
+	api.PUT("/merchant/channel/changeStatus", middleware.HasPerm("merchant:channel:edit"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).ChangeStatus)
+
+	// 上游供应商产品路由
+	api.GET("/upstream/product/list", middleware.HasPerm("upstream:product:list"), (&businesscontroller.UpstreamProductController{}).List)   // 获取上游供应商产品列表
+	api.GET("/upstream/product/:id", middleware.HasPerm("upstream:product:query"), (&businesscontroller.UpstreamProductController{}).Detail) // 获取上游供应商产品详情
+	api.POST("/upstream/product", middleware.HasPerm("upstream:product:add"), middleware.OperLogMiddleware("新增商户通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.UpstreamProductController{}).Create)
+	api.PUT("/upstream/product", middleware.HasPerm("upstream:product:edit"), middleware.OperLogMiddleware("更新商户通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.UpstreamProductController{}).Update)
+	api.PUT("/upstream/product/changeStatus", middleware.HasPerm("upstream:product:edit"), middleware.OperLogMiddleware("修改商户通道产品状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.UpstreamProductController{}).ChangeStatus)
+
+	// 代理资金日志功能路由
+	api.GET("/agent/money_log/list", middleware.HasPerm("agent:money_log:list"), (&businesscontroller.AgentMoneyLogController{}).List)   // 获取代理资金日志列表
+	api.GET("/agent/money_log/:id", middleware.HasPerm("agent:money_log:query"), (&businesscontroller.AgentMoneyLogController{}).Detail) // 获取代理资金日志详情
+
+	// 商户资金日志功能路由
+	api.GET("/merchant/money_log/list", middleware.HasPerm("merchant:money_log:list"), (&businesscontroller.AgentMoneyLogController{}).List)   // 获取代理资金日志列表
+	api.GET("/merchant/money_log/:id", middleware.HasPerm("merchant:money_log:query"), (&businesscontroller.AgentMoneyLogController{}).Detail) // 获取代理资金日志详情
 
 }
