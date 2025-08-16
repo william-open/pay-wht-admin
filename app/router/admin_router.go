@@ -232,4 +232,12 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.GET("/merchant/money_log/list", middleware.HasPerm("merchant:money_log:list"), (&businesscontroller.AgentMoneyLogController{}).List)   // 获取代理资金日志列表
 	api.GET("/merchant/money_log/:id", middleware.HasPerm("merchant:money_log:query"), (&businesscontroller.AgentMoneyLogController{}).Detail) // 获取代理资金日志详情
 
+	// 代收功能路由
+	api.GET("/business/order_receive/list", middleware.HasPerm("business:order_receive:list"), (&businesscontroller.OrderReceiveController{}).List)                   // 获取代收列表
+	api.GET("/business/order_receive/:orderId/:yearMonth", middleware.HasPerm("business:order_receive:query"), (&businesscontroller.OrderReceiveController{}).Detail) // 获取代收详情
+
+	// 代付功能路由
+	api.GET("/business/order_payout/list", middleware.HasPerm("business:order_payout:list"), (&businesscontroller.OrderPayoutController{}).List)                   // 获取代付列表
+	api.GET("/business/order_payout/:orderId/:yearMonth", middleware.HasPerm("business:order_payout:query"), (&businesscontroller.OrderPayoutController{}).Detail) // 获取代付详情
+
 }

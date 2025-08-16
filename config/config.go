@@ -50,6 +50,25 @@ type Config struct {
 		MaxOpenConns int `yaml:"maxOpenConns"`
 	} `yaml:"mysql"`
 
+	// 订单数据库配置
+	MysqlOrder struct {
+		Host string `yaml:"host"`
+		// 端口，默认为3306
+		Port int `yaml:"port"`
+		// 数据库名称
+		Database string `yaml:"database"`
+		// 用户名
+		Username string `yaml:"username"`
+		// 密码
+		Password string `yaml:"password"`
+		// 编码
+		Charset string `yaml:"charset"`
+		// 连接池最大连接数
+		MaxIdleConns int `yaml:"maxIdleConns"`
+		// 连接池最大打开连接数
+		MaxOpenConns int `yaml:"maxOpenConns"`
+	} `yaml:"mysql_order"`
+
 	// Redis配置
 	Redis struct {
 		Host string `yaml:"host"`

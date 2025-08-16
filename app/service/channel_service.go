@@ -128,9 +128,16 @@ func (s *ChannelService) GetAllDropDownList(param dto.QueryChannelByStatusReques
 
 	channelList := make([]dto.DropDownListResponse, 0)
 
-	query := dal.Gorm.Model(model.WChannel{}).Where("status = ?", param.Status).Where("currency = ?", param.Currency).Order("id asc")
+	query := dal.Gorm.Model(model.WChannel{})
 
-	query.Find(&channelList)
+	if param.Status != "" {
+		query.Where("status = ?", param.Status)
+	}
+	if param.Currency != "" {
+		query.Where("currency = ?", param.Currency)
+	}
+
+	query.Order("id asc").Find(&channelList)
 
 	return channelList
 }

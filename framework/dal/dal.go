@@ -3,8 +3,9 @@ package dal
 import "sync"
 
 type Config struct {
-	GomrConfig  *GomrConfig
-	RedisConfig *RedisConfig
+	GomrConfig      *GomrConfig
+	GomrConfigOrder *GomrConfigOrder
+	RedisConfig     *RedisConfig
 }
 
 var once sync.Once
@@ -17,7 +18,10 @@ func InitDal(config *Config) {
 		if config.GomrConfig != nil {
 			initGorm(config.GomrConfig)
 		}
-
+		// 初始化订单数据库
+		if config.GomrConfigOrder != nil {
+			initGormOrder(config.GomrConfigOrder)
+		}
 		// 初始化 Redis
 		if config.RedisConfig != nil {
 			initRedis(config.RedisConfig)

@@ -2,10 +2,12 @@ package main
 
 import (
 	"log"
+	"os"
 	"ruoyi-go/app/router"
 	"ruoyi-go/config"
 	"ruoyi-go/framework/dal"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -15,9 +17,20 @@ import (
 )
 
 func main() {
-
-	// dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+	// 数据库连接字符串
 	dsn := config.Data.Mysql.Username + ":" + config.Data.Mysql.Password + "@tcp(" + config.Data.Mysql.Host + ":" + strconv.Itoa(config.Data.Mysql.Port) + ")/" + config.Data.Mysql.Database + "?charset=" + config.Data.Mysql.Charset + "&parseTime=True&loc=Local"
+	orderDsn := config.Data.MysqlOrder.Username + ":" + config.Data.MysqlOrder.Password + "@tcp(" + config.Data.MysqlOrder.Host + ":" + strconv.Itoa(config.Data.MysqlOrder.Port) + ")/" + config.Data.MysqlOrder.Database + "?charset=" + config.Data.MysqlOrder.Charset + "&parseTime=True&loc=Local"
+
+	// 自定义GORM日志配置
+	newLogger := logger.New(
+		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		logger.Config{
+			SlowThreshold:             time.Second, // 慢SQL阈值
+			LogLevel:                  logger.Info, // 日志级别
+			IgnoreRecordNotFoundError: true,        // 忽略ErrRecordNotFound（记录未找到）错误
+			Colorful:                  true,        // 彩色打印
+		},
+	)
 
 	// 初始化数据访问层
 	dal.InitDal(&dal.Config{
@@ -26,16 +39,24 @@ func main() {
 			Opts: &gorm.Config{
 				SkipDefaultTransaction: true, // 跳过默认事务
 				NamingStrategy: schema.NamingStrategy{
-					SingularTable: true,
+					SingularTable: true, // 使用单数表名
 				},
-				Logger: logger.New(log.Default(), logger.Config{
-					// LogLevel: logger.Silent, // 不打印日志
-					LogLevel:                  logger.Error, // 打印错误日志
-					IgnoreRecordNotFoundError: true,
-				}),
+				Logger: newLogger, // 使用自定义日志配置
 			},
 			MaxOpenConns: config.Data.Mysql.MaxOpenConns,
 			MaxIdleConns: config.Data.Mysql.MaxIdleConns,
+		},
+		GomrConfigOrder: &dal.GomrConfigOrder{
+			Dialector: mysql.Open(orderDsn),
+			Opts: &gorm.Config{
+				SkipDefaultTransaction: true, // 跳过默认事务
+				NamingStrategy: schema.NamingStrategy{
+					SingularTable: true, // 使用单数表名
+				},
+				Logger: newLogger, // 使用自定义日志配置
+			},
+			MaxOpenConns: config.Data.MysqlOrder.MaxOpenConns,
+			MaxIdleConns: config.Data.MysqlOrder.MaxIdleConns,
 		},
 		RedisConfig: &dal.RedisConfig{
 			Host:     config.Data.Redis.Host,
@@ -45,29 +66,24 @@ func main() {
 		},
 	})
 
-	// 设置模式
+	// 设置gin模式
 	gin.SetMode(config.Data.Server.Mode)
 
 	// 初始化gin
 	server := gin.New()
 
-	// 设置受信任的代理 IP
-	server.SetTrustedProxies([]string{"127.0.0.1"}) // 本地代理
+	// 设置受信任的代理IP
+	server.SetTrustedProxies([]string{"127.0.0.1"})
+
 	// 使用恢复中间件
 	server.Use(gin.Recovery())
 
 	// 设置文件资源目录
-	// 如果前端使用的是 history 路由模式，需要使用 nginx 代理
-	// 注释 server.Static("/admin", "web/admin")
-	// 如果前后端不分离方式部署需要配置前端为 hash 路由模式
-	// 解除 server.Static("/admin", "web/admin") 注释
-	// 并在项目根目录下创建 web/admin 目录，将前端打包后的 dist 内的文件复制到该目录下
-	// server.Static("/admin", "web/admin")
-	// 设置上传文件目录
 	server.Static(config.Data.Ruoyi.UploadPath, config.Data.Ruoyi.UploadPath)
 
 	// 注册路由
 	router.Register(server)
 
+	// 启动服务器
 	server.Run(":" + strconv.Itoa(config.Data.Server.Port))
 }
