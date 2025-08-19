@@ -35,7 +35,7 @@ type WMerchant struct {
 	UpstreamId        string
 	Ways              string
 	UserType          string
-	PId               int64
+	PId               int64 `gorm:"column:pid;default:0"`
 }
 
 func (WMerchant) TableName() string {
