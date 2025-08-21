@@ -36,6 +36,7 @@ type OrderReceiveListResponse struct {
 	BankCode       string    `json:"bankCode"`       // 付款人银行编码
 	BankName       string    `json:"bankName"`       // 付款人银行名
 	Status         int8      `json:"status"`         // 0:待支付,1:成功,2:失败,3:退款
+	NotifyStatus   int8      `json:"notifyStatus"`   // 回调通知状态:0表示未回调，1表示回调成功，2回调失败
 	UpOrderID      *uint64   `json:"upOrderId"`      // 上游交易订单ID
 	ChannelID      int64     `json:"channelId"`      // 系统支付渠道ID
 	UpChannelID    int64     `json:"upChannelId"`    // 上游通道ID
