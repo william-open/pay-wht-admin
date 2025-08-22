@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"ruoyi-go/app/dto"
 	"ruoyi-go/app/model"
 	"ruoyi-go/framework/dal"
@@ -53,6 +54,8 @@ func (s *MerchantChannelService) UpdateMerchantChannel(param dto.SaveMerchantCha
 
 // GetMerchantChannelList 商户通道列表
 func (s *MerchantChannelService) GetMerchantChannelList(param dto.MerchantChannelListRequest, isPaging bool) ([]dto.MerchantChannelListResponse, int) {
+
+	log.Printf("查询商户通道请求参数:%+v", param)
 	var count int64
 	merchantChannelList := make([]dto.MerchantChannelListResponse, 0)
 
@@ -64,7 +67,7 @@ func (s *MerchantChannelService) GetMerchantChannelList(param dto.MerchantChanne
 		Joins("JOIN w_merchant AS f ON a.m_id = f.m_id").
 		Select("a.id,a.create_by,a.create_time,a.order_range,a.m_id,a.currency,a.default_rate,a.single_fee,b.order_range as up_order_range,c.title as upstream_title,b.default_rate as up_default_rate, b.add_rate as up_add_rate,d.coding,d.type,e.country,f.nickname as merchant_title")
 	query.Where("a.m_id = ?", param.MId)
-	if param.Status != -1 {
+	if param.Status != nil {
 		query.Where("a.status = ?", param.Status)
 	}
 	if isPaging {

@@ -27,7 +27,7 @@ type MerchantChannelListRequest struct {
 	PageRequest
 	Keyword  string `query:"keyword" form:"keyword"`
 	Currency string `query:"currency" form:"currency"`
-	Status   int8   `query:"status" form:"status"`
+	Status   *int8  `query:"status" form:"status"`
 	MId      int8   `query:"mId" form:"mId"`
 }
 
