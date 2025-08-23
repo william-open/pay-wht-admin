@@ -1,6 +1,6 @@
 package dto
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 // 部门列表
 type DeptListResponse struct {

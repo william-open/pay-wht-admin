@@ -1,9 +1,9 @@
 package service
 
 import (
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/model"
-	"ruoyi-go/framework/dal"
+	"wht-admin/app/dto"
+	"wht-admin/app/model"
+	"wht-admin/framework/dal"
 )
 
 type OperLogService struct{}
@@ -54,7 +54,7 @@ func (s *OperLogService) GetOperLogList(param dto.OperLogListRequest, isPaging b
 	if isPaging {
 		query.Count(&count).Offset((param.PageNum - 1) * param.PageSize).Limit(param.PageSize)
 	}
-	
+
 	query.Find(&operLogs)
 
 	return operLogs, int(count)

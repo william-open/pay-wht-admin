@@ -6,9 +6,9 @@ import (
 	"math/rand"
 	"net/textproto"
 	"os"
-	"ruoyi-go/config"
 	"strings"
 	"time"
+	"wht-admin/config"
 )
 
 // 上传文件

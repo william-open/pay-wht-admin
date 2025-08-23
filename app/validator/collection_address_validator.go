@@ -2,7 +2,7 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // CreateCollectionAddressValidator 添加归集钱包地址验证

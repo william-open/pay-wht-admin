@@ -1,6 +1,6 @@
 package model
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 type SysLogininfor struct {
 	InfoId        int `gorm:"primaryKey;autoIncrement"`

@@ -3,7 +3,7 @@ package validator
 import (
 	"errors"
 	"regexp"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // 修改状态验证

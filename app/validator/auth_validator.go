@@ -2,7 +2,7 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // 注册验证

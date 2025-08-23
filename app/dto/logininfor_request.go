@@ -1,6 +1,6 @@
 package dto
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 // 登录日志列表
 type LogininforListRequest struct {

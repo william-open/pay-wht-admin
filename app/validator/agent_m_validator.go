@@ -2,7 +2,7 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // 添加代理商户验证

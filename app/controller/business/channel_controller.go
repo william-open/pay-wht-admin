@@ -2,11 +2,11 @@ package businesscontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/service"
-	"ruoyi-go/app/validator"
-	"ruoyi-go/framework/response"
 	"strconv"
+	"wht-admin/app/dto"
+	"wht-admin/app/service"
+	"wht-admin/app/validator"
+	"wht-admin/framework/response"
 )
 
 type ChannelController struct{}

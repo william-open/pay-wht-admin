@@ -1,6 +1,6 @@
 package dto
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 // 通道列表
 type ChannelListResponse struct {

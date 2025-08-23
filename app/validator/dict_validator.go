@@ -2,7 +2,7 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // 创建字典类型验证

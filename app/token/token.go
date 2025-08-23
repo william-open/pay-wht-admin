@@ -4,14 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"ruoyi-go/app/dto"
-	rediskey "ruoyi-go/common/types/redis-key"
-	"ruoyi-go/common/uuid"
-	"ruoyi-go/config"
-	"ruoyi-go/framework/dal"
-	"ruoyi-go/framework/datetime"
 	"strings"
 	"time"
+	"wht-admin/app/dto"
+	rediskey "wht-admin/common/types/redis-key"
+	"wht-admin/common/uuid"
+	"wht-admin/config"
+	"wht-admin/framework/dal"
+	"wht-admin/framework/datetime"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -33,7 +33,7 @@ func GetClaims() *SysUserClaim {
 		RegisteredClaims: jwt.RegisteredClaims{
 			IssuedAt:  jwt.NewNumericDate(time.Now()), // 签发时间
 			NotBefore: jwt.NewNumericDate(time.Now()), // 生效时间
-			Issuer:    "ruoyi-go",                     // 签发人
+			Issuer:    "wht-admin",                    // 签发人
 		},
 	}
 }

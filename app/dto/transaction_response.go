@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"ruoyi-go/framework/datetime"
+	"wht-admin/framework/datetime"
 )
 
 // TransactionListResponse  交易列表

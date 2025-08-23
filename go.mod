@@ -1,4 +1,4 @@
-module ruoyi-go
+module wht-admin
 
 go 1.21
 

@@ -1,16 +1,16 @@
 package systemcontroller
 
 import (
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/security"
-	"ruoyi-go/app/service"
-	"ruoyi-go/app/validator"
-	rediskey "ruoyi-go/common/types/redis-key"
-	"ruoyi-go/common/utils"
-	"ruoyi-go/framework/dal"
-	"ruoyi-go/framework/response"
 	"strconv"
 	"time"
+	"wht-admin/app/dto"
+	"wht-admin/app/security"
+	"wht-admin/app/service"
+	"wht-admin/app/validator"
+	rediskey "wht-admin/common/types/redis-key"
+	"wht-admin/common/utils"
+	"wht-admin/framework/dal"
+	"wht-admin/framework/response"
 
 	"gitee.com/hanshuangjianke/go-excel/excel"
 	"github.com/gin-gonic/gin"

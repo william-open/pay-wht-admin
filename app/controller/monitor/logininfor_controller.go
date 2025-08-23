@@ -2,14 +2,14 @@ package monitorcontroller
 
 import (
 	"regexp"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/service"
-	rediskey "ruoyi-go/common/types/redis-key"
-	"ruoyi-go/common/utils"
-	"ruoyi-go/framework/dal"
-	"ruoyi-go/framework/response"
 	"strings"
 	"time"
+	"wht-admin/app/dto"
+	"wht-admin/app/service"
+	rediskey "wht-admin/common/types/redis-key"
+	"wht-admin/common/utils"
+	"wht-admin/framework/dal"
+	"wht-admin/framework/response"
 
 	"gitee.com/hanshuangjianke/go-excel/excel"
 	"github.com/gin-gonic/gin"

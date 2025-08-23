@@ -1,8 +1,8 @@
 package middleware
 
 import (
-	"ruoyi-go/app/security"
-	"ruoyi-go/framework/response"
+	"wht-admin/app/security"
+	"wht-admin/framework/response"
 
 	"github.com/gin-gonic/gin"
 )

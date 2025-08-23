@@ -3,11 +3,11 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/model"
-	"ruoyi-go/common/types/constant"
-	rediskey "ruoyi-go/common/types/redis-key"
-	"ruoyi-go/framework/dal"
+	"wht-admin/app/dto"
+	"wht-admin/app/model"
+	"wht-admin/common/types/constant"
+	rediskey "wht-admin/common/types/redis-key"
+	"wht-admin/framework/dal"
 )
 
 type DictTypeService struct{}

@@ -2,7 +2,7 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
+	"wht-admin/app/dto"
 )
 
 // 添加岗位验证
@@ -21,7 +21,7 @@ func CreatePostValidator(param dto.CreatePostRequest) error {
 
 // 更新岗位验证
 func UpdatePostValidator(param dto.UpdatePostRequest) error {
-	
+
 	if param.PostId <= 0 {
 		return errors.New("参数错误")
 	}

@@ -1,8 +1,8 @@
 package service
 
 import (
-	"ruoyi-go/common/types/constant"
 	"strings"
+	"wht-admin/common/types/constant"
 
 	"gorm.io/gorm"
 )

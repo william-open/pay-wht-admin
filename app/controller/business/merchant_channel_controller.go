@@ -2,13 +2,13 @@ package businesscontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/security"
-	"ruoyi-go/app/service"
-	"ruoyi-go/app/validator"
-	"ruoyi-go/common/password"
-	"ruoyi-go/framework/response"
 	"strconv"
+	"wht-admin/app/dto"
+	"wht-admin/app/security"
+	"wht-admin/app/service"
+	"wht-admin/app/validator"
+	"wht-admin/common/password"
+	"wht-admin/framework/response"
 )
 
 type MerchantChannelController struct{}

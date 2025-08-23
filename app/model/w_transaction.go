@@ -2,7 +2,7 @@ package model
 
 import (
 	"github.com/shopspring/decimal"
-	"ruoyi-go/framework/datetime"
+	"wht-admin/framework/datetime"
 )
 
 type WTransaction struct {

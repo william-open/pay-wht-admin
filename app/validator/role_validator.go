@@ -2,8 +2,8 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/common/utils"
+	"wht-admin/app/dto"
+	"wht-admin/common/utils"
 )
 
 // 添加角色验证

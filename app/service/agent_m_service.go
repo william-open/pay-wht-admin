@@ -3,10 +3,10 @@ package service
 import (
 	"fmt"
 	"log"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/model"
-	"ruoyi-go/framework/dal"
 	"time"
+	"wht-admin/app/dto"
+	"wht-admin/app/model"
+	"wht-admin/framework/dal"
 )
 
 type AgentMService struct{}

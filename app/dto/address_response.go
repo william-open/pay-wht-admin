@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"ruoyi-go/framework/datetime"
+	"wht-admin/framework/datetime"
 )
 
 // AddressListResponse 钱包地址列表

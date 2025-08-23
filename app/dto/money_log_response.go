@@ -2,7 +2,7 @@ package dto
 
 import (
 	"github.com/shopspring/decimal"
-	"ruoyi-go/framework/datetime"
+	"wht-admin/framework/datetime"
 )
 
 // MoneyLogResponse 资金日志列表

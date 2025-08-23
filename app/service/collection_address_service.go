@@ -1,9 +1,9 @@
 package service
 
 import (
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/model"
-	"ruoyi-go/framework/dal"
+	"wht-admin/app/dto"
+	"wht-admin/app/model"
+	"wht-admin/framework/dal"
 )
 
 type CollectionAddressService struct{}

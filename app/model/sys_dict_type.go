@@ -1,6 +1,6 @@
 package model
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 type SysDictType struct {
 	DictId     int `gorm:"primaryKey;autoIncrement"`

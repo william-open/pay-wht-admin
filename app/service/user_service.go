@@ -1,10 +1,10 @@
 package service
 
 import (
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/model"
-	"ruoyi-go/common/types/constant"
-	"ruoyi-go/framework/dal"
+	"wht-admin/app/dto"
+	"wht-admin/app/model"
+	"wht-admin/common/types/constant"
+	"wht-admin/framework/dal"
 )
 
 type UserService struct{}

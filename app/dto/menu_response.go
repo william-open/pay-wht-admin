@@ -1,6 +1,6 @@
 package dto
 
-import "ruoyi-go/framework/datetime"
+import "wht-admin/framework/datetime"
 
 // 菜单权限列表
 type MenuListResponse struct {

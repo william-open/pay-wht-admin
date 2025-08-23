@@ -2,9 +2,9 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/common/types/regexp"
-	"ruoyi-go/common/utils"
+	"wht-admin/app/dto"
+	"wht-admin/common/types/regexp"
+	"wht-admin/common/utils"
 )
 
 // 更新个人资料验证

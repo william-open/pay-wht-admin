@@ -1,6 +1,6 @@
 package rediskey
 
-import "ruoyi-go/config"
+import "wht-admin/config"
 
 var (
 	// 验证码 redis key

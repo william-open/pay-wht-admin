@@ -2,11 +2,11 @@ package businesscontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/service"
-	"ruoyi-go/framework/response"
 	"strconv"
 	"time"
+	"wht-admin/app/dto"
+	"wht-admin/app/service"
+	"wht-admin/framework/response"
 )
 
 type OrderReceiveController struct{}

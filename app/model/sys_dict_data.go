@@ -1,7 +1,7 @@
 package model
 
 import (
-	"ruoyi-go/framework/datetime"
+	"wht-admin/framework/datetime"
 )
 
 type SysDictData struct {

@@ -2,10 +2,10 @@ package businesscontroller
 
 import (
 	"github.com/gin-gonic/gin"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/app/service"
-	"ruoyi-go/framework/response"
 	"strconv"
+	"wht-admin/app/dto"
+	"wht-admin/app/service"
+	"wht-admin/framework/response"
 )
 
 type MerchantAccountController struct{}

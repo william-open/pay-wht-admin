@@ -2,10 +2,10 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
-	"ruoyi-go/common/types/constant"
-	"ruoyi-go/common/utils"
 	"strings"
+	"wht-admin/app/dto"
+	"wht-admin/common/types/constant"
+	"wht-admin/common/utils"
 )
 
 // 添加菜单验证

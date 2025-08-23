@@ -2,9 +2,9 @@ package captcha
 
 import (
 	"context"
-	rediskey "ruoyi-go/common/types/redis-key"
-	"ruoyi-go/framework/dal"
 	"time"
+	rediskey "wht-admin/common/types/redis-key"
+	"wht-admin/framework/dal"
 )
 
 // 实现captcha.Store接口

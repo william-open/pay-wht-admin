@@ -2,8 +2,8 @@ package validator
 
 import (
 	"errors"
-	"ruoyi-go/app/dto"
 	"strings"
+	"wht-admin/app/dto"
 )
 
 // 添加代理验证

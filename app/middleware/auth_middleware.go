@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"ruoyi-go/app/security"
-	"ruoyi-go/app/token"
-	"ruoyi-go/common/types/constant"
-	"ruoyi-go/framework/response"
 	"time"
+	"wht-admin/app/security"
+	"wht-admin/app/token"
+	"wht-admin/common/types/constant"
+	"wht-admin/framework/response"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,12 +1,12 @@
 package router
 
 import (
-	"ruoyi-go/app/controller"
-	businesscontroller "ruoyi-go/app/controller/business"
-	monitorcontroller "ruoyi-go/app/controller/monitor"
-	systemcontroller "ruoyi-go/app/controller/system"
-	"ruoyi-go/app/middleware"
-	"ruoyi-go/common/types/constant"
+	"wht-admin/app/controller"
+	businesscontroller "wht-admin/app/controller/business"
+	monitorcontroller "wht-admin/app/controller/monitor"
+	systemcontroller "wht-admin/app/controller/system"
+	"wht-admin/app/middleware"
+	"wht-admin/common/types/constant"
 
 	"github.com/gin-gonic/gin"
 )

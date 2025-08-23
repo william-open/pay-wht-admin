@@ -1,8 +1,8 @@
 package security
 
 import (
-	"ruoyi-go/app/service"
-	"ruoyi-go/app/token"
+	"wht-admin/app/service"
+	"wht-admin/app/token"
 
 	"github.com/gin-gonic/gin"
 )

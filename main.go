@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 	"os"
-	"ruoyi-go/app/router"
-	"ruoyi-go/config"
-	"ruoyi-go/framework/dal"
 	"strconv"
 	"time"
+	"wht-admin/app/router"
+	"wht-admin/config"
+	"wht-admin/framework/dal"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"

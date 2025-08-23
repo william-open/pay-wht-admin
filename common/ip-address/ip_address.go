@@ -3,8 +3,8 @@ package ipaddress
 import (
 	"encoding/json"
 	"net"
-	"ruoyi-go/common/curl"
-	"ruoyi-go/common/utils"
+	"wht-admin/common/curl"
+	"wht-admin/common/utils"
 
 	"github.com/mileusna/useragent"
 )
