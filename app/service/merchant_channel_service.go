@@ -65,7 +65,7 @@ func (s *MerchantChannelService) GetMerchantChannelList(param dto.MerchantChanne
 		Joins("JOIN w_pay_way AS d ON a.sys_channel_id = d.id").
 		Joins("JOIN w_currency_code AS e ON a.currency = e.`code`").
 		Joins("JOIN w_merchant AS f ON a.m_id = f.m_id").
-		Select("a.id,a.create_by,a.create_time,a.order_range,a.m_id,a.currency,a.default_rate,a.single_fee,b.order_range as up_order_range,c.title as upstream_title,b.default_rate as up_default_rate, b.add_rate as up_add_rate,d.coding,d.type,e.country,f.nickname as merchant_title")
+		Select("a.status,a.id,a.create_by,a.create_time,a.order_range,a.m_id,a.currency,a.default_rate,a.single_fee,b.order_range as up_order_range,c.title as upstream_title,b.default_rate as up_default_rate, b.add_rate as up_add_rate,d.coding,d.type,e.country,f.nickname as merchant_title,b.title as up_product_title,b.upstream_code,d.type")
 	query.Where("a.m_id = ?", param.MId)
 	if param.Status != nil {
 		query.Where("a.status = ?", param.Status)
