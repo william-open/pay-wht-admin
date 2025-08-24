@@ -4,7 +4,7 @@ import "time"
 
 // 代付列表
 type OrderPayoutListResponse struct {
-	OrderID        uint64    `json:"orderId"`        // 全局唯一订单ID
+	OrderID        string    `json:"orderId"`        // 全局唯一订单ID
 	MID            uint64    `json:"mId"`            // 商户ID
 	MTitle         string    `json:"mTitle"`         // 商户名称
 	ChannelCode    string    `json:"channelCode"`    // 系统通道编码

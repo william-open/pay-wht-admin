@@ -96,7 +96,7 @@ func (*MerchantController) Create(ctx *gin.Context) {
 		PublicKey:    publicPEM,
 		PrivateKey:   privatePEM,
 		ApiKey:       utils.GenerateApiKey(),
-		AppId:        GenerateUniqueMerchantCode("80"),
+		AppId:        GenerateWithUUID(""),
 		Status:       param.Status,
 		CreateBy:     security.GetAuthUserName(ctx),
 		PayType:      param.PayType,
@@ -220,6 +220,13 @@ func GenerateUniqueMerchantCode(prefix string) string {
 			return code
 		}
 	}
+}
+
+// GenerateWithUUID 生成商户号（UUID版本）- 取16位
+func GenerateWithUUID(prefix string) string {
+	uuid := uuid.New().String()
+	cleanUUID := strings.ReplaceAll(uuid, "-", "")
+	return prefix + cleanUUID[:16] // 取前16位
 }
 
 // 更新白名单 Whitelist

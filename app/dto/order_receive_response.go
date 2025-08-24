@@ -4,7 +4,7 @@ import "time"
 
 // 代收列表
 type OrderReceiveListResponse struct {
-	OrderID        uint64    `json:"orderId"`        // 全局唯一订单ID
+	OrderID        string    `json:"orderId"`        // 全局唯一订单ID
 	MID            uint64    `json:"mId"`            // 商户ID
 	SupplierID     int64     `json:"supplierId"`     // 上游供应商ID
 	MOrderId       string    `json:"mOrderId"`       // 商户订单号
