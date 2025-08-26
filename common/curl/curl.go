@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -126,6 +127,7 @@ func postRequest(requestParam *RequestParam) (*http.Request, error) {
 	if requestParam.Json != nil {
 		// 将json序列化为字节数组
 		jsonData, _ := json.Marshal(requestParam.Json)
+		log.Printf("请求API地址: %+v,请求JSON数据: %+v", requestParam.Url, string(jsonData))
 		body = bytes.NewBuffer(jsonData)
 	}
 

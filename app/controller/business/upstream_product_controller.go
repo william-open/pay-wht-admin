@@ -3,6 +3,7 @@ package businesscontroller
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"log"
 	"strconv"
 	"wht-admin/app/dto"
 	"wht-admin/app/service"
@@ -185,4 +186,50 @@ func (*UpstreamProductController) GetListByStatus(ctx *gin.Context) {
 	upstreamList := (&service.PayUpstreamService{}).GetAlUpstreamList(status)
 
 	response.NewSuccess().SetData("data", upstreamList).Json(ctx)
+}
+
+// 测试供应商通道产品详情
+func (*UpstreamProductController) TestDetail(ctx *gin.Context) {
+
+	id, _ := strconv.Atoi(ctx.Param("id"))
+
+	channel := (&service.UpstreamProductService{}).GetTestPayUpstreamProductById(id)
+	log.Printf("数据：%+v", channel)
+
+	response.NewSuccess().SetData("data", channel).Json(ctx)
+}
+
+// TestOrderCreate 测试上游供应商通道产品
+func (*UpstreamProductController) TestOrderCreate(ctx *gin.Context) {
+
+	var param dto.TestCreatePayUpstreamProductRequest
+
+	if err := ctx.ShouldBind(&param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := validator.TestPayUpstreamProductValidator(param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	// 判断是代收还是代付，走不同service下单
+	var channelType dto.UpstreamProductTypeResponse
+	channelType = (&service.UpstreamProductService{}).GetPayChannelTypeById(param.Id)
+	log.Printf("测试上游供应商,通道类型: %+v", channelType)
+	param.PayType = channelType.Coding
+	if channelType.Type == 1 { //代收
+		result, err := (&service.TestingChannelService{}).CreateCollectOrder(param)
+		if err != nil {
+			response.NewError().SetMsg("测试供应商通道产品下单失败，失败" + err.Error()).Json(ctx)
+			return
+		}
+		log.Printf("测试上游供应商,返回结果: %+v", result)
+		response.NewSuccess().SetData("data", result).Json(ctx)
+	} else { //代付
+
+	}
+
+	//response.NewSuccess().Json(ctx)
 }

@@ -99,6 +99,13 @@ type Config struct {
 			LockTime int `yaml:"lockTime"`
 		} `yaml:"password"`
 	} `yaml:"user"`
+
+	// 下游商户测试ID配置
+	TestDownMerchant struct {
+		MerchantID string `yaml:"merchantID"`
+		NotifyUrl  string `yaml:"notifyUrl"`
+		ApiUrl     string `yaml:"apiUrl"`
+	} `yaml:"testDownMerchant"`
 }
 
 var Data *Config

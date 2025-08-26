@@ -79,3 +79,19 @@ type ExistPayUpstreamProductRequest struct {
 	SysChannelId int64  `json:"sysChannelId"`
 	UpstreamCode string `json:"upstreamCode"`
 }
+
+// TestCreatePayUpstreamProductRequest 测试上游供应商通道产品
+type TestCreatePayUpstreamProductRequest struct {
+	Id           int64  `json:"id"`           // 上游供应商通道产品ID
+	Amount       string `json:"amount"`       // 订单金额
+	AccName      string `json:"accName"`      // 姓名
+	PayType      string `json:"payType"`      // 通道编码
+	AccNo        string `json:"accNo"`        // 账号
+	PayEmail     string `json:"payEmail"`     // 邮箱
+	BankName     string `json:"bankName"`     // 银行名称
+	BankCode     string `json:"bankCode"`     // 银行编码
+	PayPhone     string `json:"payPhone"`     //手机号码
+	PayMethod    string `json:"payMethod"`    // 支付方式
+	IdentityType string `json:"identityType"` // 证件类型
+	IdentityNum  string `json:"identityNum"`  // 证件号码
+}

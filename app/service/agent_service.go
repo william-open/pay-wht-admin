@@ -2,6 +2,7 @@ package service
 
 import (
 	"log"
+	"strconv"
 	"wht-admin/app/dto"
 	"wht-admin/app/model"
 	"wht-admin/framework/dal"
@@ -133,5 +134,13 @@ func (s *AgentService) UpdateAgentWhitelist(param dto.SaveAgentWhitelist) error 
 	return dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
 		ApiIp:      param.ApiIp,
 		LoginApiIp: param.LoginApiIp,
+	}).Error
+}
+
+// UpdateAgentStatus 更新代理状态
+func (s *AgentService) UpdateAgentStatus(param dto.UpdateAgentStatus) error {
+
+	return dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
+		Status: strconv.Itoa(int(param.Status)),
 	}).Error
 }

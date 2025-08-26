@@ -1,8 +1,10 @@
 package service
 
 import (
+	"log"
 	"wht-admin/app/dto"
 	"wht-admin/app/model"
+	"wht-admin/config"
 	"wht-admin/framework/dal"
 )
 
@@ -86,7 +88,7 @@ func (s *UpstreamProductService) GetPayUpstreamProductList(param dto.PayUpstream
 	return channels, int(count)
 }
 
-// 获取上游供应商通道详情
+// GetPayUpstreamProductById 获取上游供应商通道详情
 func (s *UpstreamProductService) GetPayUpstreamProductById(id int) dto.PayUpstreamProductDetailResponse {
 
 	var upstreamProduct dto.PayUpstreamProductDetailResponse
@@ -96,7 +98,34 @@ func (s *UpstreamProductService) GetPayUpstreamProductById(id int) dto.PayUpstre
 	return upstreamProduct
 }
 
-// 根据上游供应商通道名称查询通道名称
+// GetTestPayUpstreamProductById 获取测试上游供应商通道详情
+func (s *UpstreamProductService) GetTestPayUpstreamProductById(id int) dto.TestPayUpstreamProductDetailResponse {
+
+	var resp dto.TestPayUpstreamProductDetailResponse
+
+	dal.Gorm.Table("w_pay_upstream_product AS a").
+		Joins("LEFT JOIN w_pay_way AS b ON a.sys_channel_id = b.id").
+		Joins("LEFT JOIN w_pay_upstream AS c ON a.upstream_id = c.id").
+		Select("a.currency,a.order_range AS product_order_range,a.title AS product_title ,c.title AS upstream_name,b.title AS channel_title,b.coding AS channel_code,a.upstream_code AS product_code").
+		Where("a.id = ?", id).Find(&resp)
+
+	// 测试下游商户信息
+	var merchantCurrency dto.MerchantCurrencyDetailResponse
+	var testMerchantId = config.Data.TestDownMerchant.MerchantID
+	log.Printf("测试商户ID:%v", testMerchantId)
+	dal.Gorm.Table("w_merchant AS a").
+		Joins("LEFT JOIN w_merchant_money AS b ON a.m_id = b.uid").
+		Select("a.m_id,a.nickname,b.currency,b.money,b.freeze_money").
+		Where("a.m_id = ?", testMerchantId).
+		Where("b.currency = ?", resp.Currency).
+		Find(&merchantCurrency)
+	resp.MerchantName = merchantCurrency.Nickname
+	resp.MerchantBalance = merchantCurrency.Money
+
+	return resp
+}
+
+// GetPayUpstreamProductByTitle 根据上游供应商通道名称查询通道名称
 func (s *UpstreamProductService) GetPayUpstreamProductByTitle(title string) dto.PayUpstreamProductDetailResponse {
 
 	var upstreamChannel dto.PayUpstreamProductDetailResponse
@@ -159,4 +188,18 @@ func (s *UpstreamProductService) UpdateUpstreamProductStatus(param dto.SaveStatu
 	}
 
 	return tx.Commit().Error
+}
+
+// GetPayChannelTypeById 根据上游供应商通道ID查询通道类型
+func (s *UpstreamProductService) GetPayChannelTypeById(id int64) dto.UpstreamProductTypeResponse {
+
+	var resp dto.UpstreamProductTypeResponse
+
+	dal.Gorm.Table("w_pay_upstream_product AS a").
+		Joins("LEFT JOIN w_pay_way AS b ON a.sys_channel_id = b.id").
+		Select("b.type,b.coding").
+		Where("a.id = ?", id).
+		Find(&resp)
+
+	return resp
 }

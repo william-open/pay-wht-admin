@@ -6,7 +6,9 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"reflect"
 	"regexp"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -129,4 +131,129 @@ func GenerateApiKey() string {
 func GenerateMerchantCode() string {
 	seed := time.Now().UnixNano()
 	return fmt.Sprintf("%08d", seed%1000000)
+}
+
+// GenerateMerchantOrderNo 生成商户订单号
+func GenerateMerchantOrderNo(merchantID int64) string {
+	timestamp := time.Now().Format("20060102150405") // 精确到秒
+	randPart := rand.Intn(10000)                     // 4位随机数
+	return fmt.Sprintf("M%d%s%04d", merchantID, timestamp, randPart)
+}
+
+// GetTimestampMs 生成 13 位时间戳（毫秒）
+func GetTimestampMs() int64 {
+	return time.Now().UnixNano() / 1e6
+}
+
+// GenerateProductName 通用英文名称生成器（适合国际化产品）
+func GenerateProductName() string {
+	adjectives := []string{"Smart", "Ultra", "Secure", "Fast", "Global", "Prime", "Easy", "Next"}
+	nouns := []string{"Pay", "Link", "Flow", "Channel", "Bridge", "Token", "Gate", "Stream"}
+
+	rand.Seed(time.Now().UnixNano())
+	adj := adjectives[rand.Intn(len(adjectives))]
+	noun := nouns[rand.Intn(len(nouns))]
+	suffix := rand.Intn(1000)
+
+	return fmt.Sprintf("%s%s-%03d", adj, noun, suffix)
+}
+
+// GenerateSign 生成签名（用于请求或验证）
+func GenerateSign(params map[string]string, secretKey string) string {
+	keys := make([]string, 0, len(params))
+	for k, v := range params {
+		if k == "sign" || strings.TrimSpace(v) == "" {
+			continue
+		}
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+
+	var sb strings.Builder
+	for i, k := range keys {
+		sb.WriteString(k)
+		sb.WriteString("=")
+		sb.WriteString(params[k])
+		if i < len(keys)-1 {
+			sb.WriteString("&")
+		}
+	}
+	sb.WriteString("&key=")
+	sb.WriteString(secretKey)
+
+	//log.Printf("签名query字符串:%v", sb.String())
+	hash := md5.Sum([]byte(sb.String()))
+	signStr := strings.ToUpper(hex.EncodeToString(hash[:]))
+	//log.Printf("签名值: %v", signStr)
+	return signStr
+}
+
+func StructToMapString(req interface{}) map[string]string {
+	result := make(map[string]string)
+	val := reflect.ValueOf(req)
+	typ := reflect.TypeOf(req)
+
+	for i := 0; i < val.NumField(); i++ {
+		field := typ.Field(i)
+		jsonTag := field.Tag.Get("json")
+		if jsonTag == "" || jsonTag == "-" {
+			continue
+		}
+		// 去除 json 标签中的 ",omitempty" 等
+		jsonKey := jsonTag
+		if commaIdx := len(jsonKey); commaIdx > 0 {
+			if idx := indexOf(jsonKey, ','); idx != -1 {
+				jsonKey = jsonKey[:idx]
+			}
+		}
+		// 获取字段值
+		value := val.Field(i).Interface()
+		result[jsonKey] = toString(value)
+	}
+	return result
+}
+
+func StructToMapInterface(req interface{}) map[string]interface{} {
+	result := make(map[string]interface{})
+	val := reflect.ValueOf(req)
+	typ := reflect.TypeOf(req)
+
+	for i := 0; i < val.NumField(); i++ {
+		field := typ.Field(i)
+		jsonTag := field.Tag.Get("json")
+		if jsonTag == "" || jsonTag == "-" {
+			continue
+		}
+		// 去除 json 标签中的 ",omitempty" 等
+		jsonKey := jsonTag
+		if commaIdx := len(jsonKey); commaIdx > 0 {
+			if idx := indexOf(jsonKey, ','); idx != -1 {
+				jsonKey = jsonKey[:idx]
+			}
+		}
+		// 获取字段值
+		value := val.Field(i).Interface()
+		result[jsonKey] = toString(value)
+	}
+	return result
+}
+
+func toString(v interface{}) string {
+	switch val := v.(type) {
+	case string:
+		return val
+	case fmt.Stringer:
+		return val.String()
+	default:
+		return fmt.Sprintf("%v", val)
+	}
+}
+
+func indexOf(s string, sep byte) int {
+	for i := 0; i < len(s); i++ {
+		if s[i] == sep {
+			return i
+		}
+	}
+	return -1
 }

@@ -150,6 +150,8 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.POST("/business/agent", middleware.HasPerm("business:agent:add"), middleware.OperLogMiddleware("新增代理", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.AgentController{}).Create)
 	api.PUT("/business/agent", middleware.HasPerm("business:agent:edit"), middleware.OperLogMiddleware("更新代理", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentController{}).Update)
 	api.PUT("/business/agent/whitelist", middleware.HasPerm("business:agent:whitelist"), middleware.OperLogMiddleware("更新白名单", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentController{}).Whitelist)
+	api.PUT("/business/agent/changeStatus", middleware.HasPerm("business:agent:changeStatus"), middleware.OperLogMiddleware("修改代理状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.AgentController{}).ChangeStatus)
+
 	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
 
 	// 代理商户功能路由
@@ -218,9 +220,11 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.PUT("/merchant/channel/changeStatus", middleware.HasPerm("merchant:channel:edit"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).ChangeStatus)
 
 	// 上游供应商产品路由
-	api.GET("/upstream/product/list", middleware.HasPerm("upstream:product:list"), (&businesscontroller.UpstreamProductController{}).List)   // 获取上游供应商产品列表
-	api.GET("/upstream/product/:id", middleware.HasPerm("upstream:product:query"), (&businesscontroller.UpstreamProductController{}).Detail) // 获取上游供应商产品详情
+	api.GET("/upstream/product/list", middleware.HasPerm("upstream:product:list"), (&businesscontroller.UpstreamProductController{}).List)                 // 获取上游供应商产品列表
+	api.GET("/upstream/product/:id", middleware.HasPerm("upstream:product:query"), (&businesscontroller.UpstreamProductController{}).Detail)               // 获取上游供应商产品详情
+	api.GET("/upstream/test_product/:id", middleware.HasPerm("upstream:product:test_query"), (&businesscontroller.UpstreamProductController{}).TestDetail) // 获取测试上游供应商产品详情信息
 	api.POST("/upstream/product", middleware.HasPerm("upstream:product:add"), middleware.OperLogMiddleware("新增商户通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.UpstreamProductController{}).Create)
+	api.POST("/upstream/test_product/order", middleware.HasPerm("upstream:product:test_order"), middleware.OperLogMiddleware("测试上游供应商通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.UpstreamProductController{}).TestOrderCreate)
 	api.PUT("/upstream/product", middleware.HasPerm("upstream:product:edit"), middleware.OperLogMiddleware("更新商户通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.UpstreamProductController{}).Update)
 	api.PUT("/upstream/product/changeStatus", middleware.HasPerm("upstream:product:edit"), middleware.OperLogMiddleware("修改商户通道产品状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.UpstreamProductController{}).ChangeStatus)
 

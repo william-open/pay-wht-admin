@@ -59,6 +59,12 @@ type UpdateAgentRequest struct {
 	Remark            string `json:"remark"`
 }
 
+// UpdateAgentStatusRequest 修改代理状态
+type UpdateAgentStatusRequest struct {
+	MId    int    `json:"mId" binding:"required"`
+	Status string `json:"status" binding:"required"`
+}
+
 // UpdateAgentWhitelistRequest 更新白名单
 type UpdateAgentWhitelistRequest struct {
 	MId        int    `json:"mId" binding:"required"`
@@ -73,4 +79,10 @@ type SaveAgentWhitelist struct {
 	ApiIp      string `json:"apiIp" binding:"required"`
 	LoginApiIp string `json:"loginApiIp" binding:"required"`
 	ApiDomain  string `json:"apiDomain" binding:"required"`
+}
+
+// UpdateAgentStatus 更新代理
+type UpdateAgentStatus struct {
+	MId    int  `json:"mId" binding:"required"`
+	Status int8 `json:"status"`
 }

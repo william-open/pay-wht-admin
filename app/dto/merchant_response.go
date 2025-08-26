@@ -42,6 +42,7 @@ type MerchantDetailResponse struct {
 	ApiDomain         string            `json:"apiDomain"`
 	PayType           string            `json:"payType"`
 	Password          string            `json:"password"`
+	ApiKey            string            `json:"apiKey"`
 	UserType          string            `json:"userType"`
 	Balance           decimal.Decimal   `json:"balance"`
 	Status            string            `json:"status"`
@@ -56,4 +57,13 @@ type MerchantDetailResponse struct {
 type MerchantDropDownListResponse struct {
 	MId      int    `json:"mId"`
 	Nickname string `json:"nickname"`
+}
+
+// MerchantCurrencyDetailResponse 商户货币详情
+type MerchantCurrencyDetailResponse struct {
+	MId         int    `json:"mId"`
+	Nickname    string `json:"nickname"`
+	Currency    string `json:"currency"`
+	Money       string `json:"money"`
+	FreezeMoney string `json:"freezeMoney"`
 }

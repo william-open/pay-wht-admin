@@ -76,3 +76,17 @@ func UpdatePayUpstreamProductValidator(param dto.UpdatePayUpstreamProductRequest
 
 	return nil
 }
+
+// TestPayUpstreamProductValidator 测试上游供应商通道产品验证
+func TestPayUpstreamProductValidator(param dto.TestCreatePayUpstreamProductRequest) error {
+
+	if param.Id < 1 {
+		return errors.New("请选择上游供应商通道产品")
+	}
+
+	if param.Amount == "" {
+		return errors.New("请输入订单金额")
+	}
+
+	return nil
+}

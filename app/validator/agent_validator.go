@@ -59,3 +59,16 @@ func UpdateAgentWhitelistValidator(param dto.UpdateWhitelistRequest) error {
 
 	return nil
 }
+
+// 更新代理状态
+func UpdateAgentStatusValidator(param dto.UpdateAgentStatusRequest) error {
+
+	if param.MId <= 0 {
+		return errors.New("参数错误")
+	}
+
+	if param.Status == "" {
+		return errors.New("请操作状态")
+	}
+	return nil
+}

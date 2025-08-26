@@ -242,3 +242,34 @@ func GenerateUniqueAgentCode(prefix string) string {
 		}
 	}
 }
+
+// ChangeStatus 更新代理状态
+func (*AgentController) ChangeStatus(ctx *gin.Context) {
+
+	var param dto.UpdateAgentStatusRequest
+
+	if err := ctx.ShouldBind(&param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := validator.UpdateAgentStatusValidator(param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+	status, err := strconv.Atoi(param.Status)
+	if err != nil {
+		fmt.Println("转换失败:", err)
+		return
+	}
+	//log.Printf("状态: %v", int8(status))
+	if err := (&service.AgentService{}).UpdateAgentStatus(dto.UpdateAgentStatus{
+		MId:    param.MId,
+		Status: int8(status),
+	}); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	response.NewSuccess().Json(ctx)
+}
