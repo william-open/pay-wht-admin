@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"math/rand"
+	"net"
 	"reflect"
 	"regexp"
 	"sort"
@@ -256,4 +257,44 @@ func indexOf(s string, sep byte) int {
 		}
 	}
 	return -1
+}
+
+func HandleIpList(ipStr string) []string {
+	var validIPs []string
+
+	if ipStr == "" {
+		return validIPs
+	}
+
+	// 拆分（无论是否包含逗号都统一处理）
+	ips := strings.Split(ipStr, ",")
+	for _, ip := range ips {
+		ip = strings.TrimSpace(ip)
+		if ip == "" {
+			continue
+		}
+		if net.ParseIP(ip) != nil {
+			validIPs = append(validIPs, ip)
+		}
+	}
+
+	return validIPs
+}
+
+func DeduplicateIPs(ipList []string) []string {
+	seen := make(map[string]struct{})
+	var result []string
+
+	for _, ip := range ipList {
+		ip = strings.TrimSpace(ip)
+		if ip == "" {
+			continue
+		}
+		if _, exists := seen[ip]; !exists {
+			seen[ip] = struct{}{}
+			result = append(result, ip)
+		}
+	}
+
+	return result
 }

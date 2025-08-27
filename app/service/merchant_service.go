@@ -111,16 +111,6 @@ func (s *MerchantService) GetMerchantByAppId(appId string) int64 {
 	return count
 }
 
-// UpdateMerchantWhitelist 更新商户白名单
-func (s *MerchantService) UpdateMerchantWhitelist(param dto.SaveMerchantWhitelist) error {
-
-	return dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
-		ApiIp:      param.ApiIp,
-		LoginApiIp: param.LoginApiIp,
-		ApiDomain:  param.ApiDomain,
-	}).Error
-}
-
 // GetDropDownList 商户下拉列表
 func (s *MerchantService) GetDropDownList() []dto.MerchantDropDownListResponse {
 	merchantList := make([]dto.MerchantDropDownListResponse, 0)

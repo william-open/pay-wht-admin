@@ -133,6 +133,22 @@ func (*MerchantController) Create(ctx *gin.Context) {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
+	// 创建默认商户白名单
+	ipList := []string{
+		"0.0.0.0",
+	}
+	mErr := (&service.MerchantWhitelistService{}).CreateMerchantWhitelist(dto.SaveMerchantWhitelist{
+		MID:        uint64(merchantId),
+		CanReceive: 1,
+		CanPayout:  0,
+		CanAdmin:   1,
+		CreateBy:   security.GetAuthUserName(ctx),
+		Remark:     param.Remark,
+	}, ipList)
+	if mErr != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
 	response.NewSuccess().Json(ctx)
 }
 
@@ -227,32 +243,4 @@ func GenerateWithUUID(prefix string) string {
 	uuid := uuid.New().String()
 	cleanUUID := strings.ReplaceAll(uuid, "-", "")
 	return prefix + cleanUUID[:16] // 取前16位
-}
-
-// 更新白名单 Whitelist
-func (*MerchantController) Whitelist(ctx *gin.Context) {
-
-	var param dto.UpdateWhitelistRequest
-
-	if err := ctx.ShouldBind(&param); err != nil {
-		response.NewError().SetMsg(err.Error()).Json(ctx)
-		return
-	}
-
-	if err := validator.UpdateMerchantWhitelistValidator(param); err != nil {
-		response.NewError().SetMsg(err.Error()).Json(ctx)
-		return
-	}
-
-	if err := (&service.MerchantService{}).UpdateMerchantWhitelist(dto.SaveMerchantWhitelist{
-		MId:        param.MId,
-		ApiIp:      param.ApiIp,
-		LoginApiIp: param.LoginApiIp,
-		ApiDomain:  param.ApiDomain,
-	}); err != nil {
-		response.NewError().SetMsg(err.Error()).Json(ctx)
-		return
-	}
-
-	response.NewSuccess().Json(ctx)
 }

@@ -65,11 +65,3 @@ type UpdateWhitelistRequest struct {
 	LoginApiIp string `json:"loginApiIp" binding:"required"`
 	ApiDomain  string `json:"apiDomain" binding:"required"`
 }
-
-// SaveMerchantWhitelist 保存商户白名单
-type SaveMerchantWhitelist struct {
-	MId        int    `json:"mId" binding:"required"`
-	ApiIp      string `json:"apiIp" binding:"required"`
-	LoginApiIp string `json:"loginApiIp" binding:"required"`
-	ApiDomain  string `json:"apiDomain" binding:"required"`
-}

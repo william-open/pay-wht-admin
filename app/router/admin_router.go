@@ -136,7 +136,9 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.GET("/business/merchant/:merchantId", middleware.HasPerm("business:merchant:query"), (&businesscontroller.MerchantController{}).Detail)               // 获取商户详情
 	api.POST("/business/merchant", middleware.HasPerm("business:merchant:add"), middleware.OperLogMiddleware("新增商户", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantController{}).Create)
 	api.PUT("/business/merchant", middleware.HasPerm("business:merchant:edit"), middleware.OperLogMiddleware("更新商户", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Update)
-	api.PUT("/business/merchant/whitelist", middleware.HasPerm("business:merchant:whitelist"), middleware.OperLogMiddleware("更新白名单", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Whitelist)
+	api.GET("/merchant/whitelist/list", middleware.HasPerm("merchant:whitelist:list"), (&businesscontroller.MerchantWhitelistController{}).List) // 获取商户白名单列表
+	api.DELETE("/merchant/whitelist/:ids", middleware.HasPerm("merchant:whitelist:remove"), middleware.OperLogMiddleware("删除商户白名单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&businesscontroller.MerchantWhitelistController{}).Remove)
+	api.POST("/merchant/whitelist", middleware.HasPerm("merchant:whitelist:add"), middleware.OperLogMiddleware("新增商户白名单", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantWhitelistController{}).Create)
 	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
 
 	// 商户账户功能路由
