@@ -102,9 +102,10 @@ type Config struct {
 
 	// 下游商户测试ID配置
 	TestDownMerchant struct {
-		MerchantID string `yaml:"merchantID"`
-		NotifyUrl  string `yaml:"notifyUrl"`
-		ApiUrl     string `yaml:"apiUrl"`
+		MerchantID    string `yaml:"merchantID"`
+		NotifyUrl     string `yaml:"notifyUrl"`
+		ReceiveApiUrl string `yaml:"receiveApiUrl"`
+		PayoutApiUrl  string `yaml:"payoutApiUrl"`
 	} `yaml:"testDownMerchant"`
 }
 

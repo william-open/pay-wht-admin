@@ -61,7 +61,7 @@ func (s *OrderPayoutService) GetOrderPayoutList(param dto.OrderPayoutListRequest
 		query := dal.GormOrder.Table(table)
 
 		if param.Keyword != "" {
-			query = query.Where("order_id LIKE ?", "%"+param.Keyword+"%")
+			query = query.Where("order_id LIKE ? OR up_order_id LIKE ? OR m_order_id LIKE ?", "%"+param.Keyword+"%", "%"+param.Keyword+"%", "%"+param.Keyword+"%")
 		}
 		if param.Status != "" {
 			query = query.Where("status = ?", param.Status)

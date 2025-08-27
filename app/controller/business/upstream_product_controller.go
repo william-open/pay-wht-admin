@@ -222,13 +222,19 @@ func (*UpstreamProductController) TestOrderCreate(ctx *gin.Context) {
 	if channelType.Type == 1 { //代收
 		result, err := (&service.TestingChannelService{}).CreateCollectOrder(param)
 		if err != nil {
-			response.NewError().SetMsg("测试供应商通道产品下单失败，失败" + err.Error()).Json(ctx)
+			response.NewError().SetMsg("测试供应商通道产品代收下单失败，失败" + err.Error()).Json(ctx)
 			return
 		}
 		log.Printf("测试上游供应商,返回结果: %+v", result)
 		response.NewSuccess().SetData("data", result).Json(ctx)
 	} else { //代付
-
+		result, err := (&service.TestingChannelService{}).CreatePayoutOrder(param)
+		if err != nil {
+			response.NewError().SetMsg("测试供应商通道产品代付下单失败，失败" + err.Error()).Json(ctx)
+			return
+		}
+		log.Printf("测试上游供应商,返回结果: %+v", result)
+		response.NewSuccess().SetData("data", result).Json(ctx)
 	}
 
 	//response.NewSuccess().Json(ctx)
