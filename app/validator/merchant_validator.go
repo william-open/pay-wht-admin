@@ -58,3 +58,25 @@ func UpdateMerchantWhitelistValidator(param dto.UpdateWhitelistRequest) error {
 
 	return nil
 }
+
+// UpdateMerchantPwdValidator 更新商户密码验证
+func UpdateMerchantPwdValidator(param dto.UpdateMerchantPwdRequest) error {
+
+	if param.MId <= 0 {
+		return errors.New("参数错误")
+	}
+
+	if param.LoginPwd != "" {
+		if len(param.LoginPwd) < 6 {
+			return errors.New("登录密码至少6位")
+		}
+	}
+
+	if param.PayPwd != "" {
+		if len(param.PayPwd) < 6 {
+			return errors.New("支付密码至少6位")
+		}
+	}
+
+	return nil
+}

@@ -24,6 +24,13 @@ type SaveShopAdmin struct {
 	DeleteTime    int64  `gorm:"not null;default:0;comment:'删除时间'"`
 }
 
+// 更新用户信息
+type UpdateShopAdmin struct {
+	Password string `json:"password"`
+	Salt     string `json:"salt"`
+	MId      uint   `json:"mId"`
+}
+
 // 新增用户
 type CreateShopAdminRequest struct {
 	DeptId        uint   `gorm:"not null;default:0;comment:'部门ID'"`

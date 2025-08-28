@@ -93,3 +93,19 @@ func (s *ShopAdminService) CreateShopDept(param dto.SaveShopDept) error {
 
 	return tx.Commit().Error
 }
+
+// 更新用户登录密码
+func (s *ShopAdminService) UpdateShopAdminPwd(param dto.UpdateShopAdmin) error {
+
+	tx := dal.Gorm.Begin()
+
+	if err := tx.Model(model.SAuthAdmin{}).Where("m_id = ?", param.MId).Where("p_id=?", 0).Updates(&model.SAuthAdmin{
+		Password: param.Password,
+		Salt:     param.Salt,
+	}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}

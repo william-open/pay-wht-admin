@@ -62,3 +62,9 @@ type UpdateMerchantChannelRequest struct {
 	OrderRange       string  `json:"orderRange"`       // 订单金额范围
 	UpstreamProducts []int64 `json:"upstreamProducts"` // 绑定上游通道产品
 }
+
+// UpdateMerchantChannelStatusRequest 修改商户通道状态
+type UpdateMerchantChannelStatusRequest struct {
+	ID     int    `json:"id" binding:"required"`
+	Status string `json:"status" binding:"required"`
+}

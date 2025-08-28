@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -297,4 +298,24 @@ func DeduplicateIPs(ipList []string) []string {
 	}
 
 	return result
+}
+
+func SecurePaymentPassword(length int) string {
+	var digitRunes = []rune("0123456789")
+
+	// 用 sync.Pool 复用 rand 实例，避免频繁创建
+	var randPool = sync.Pool{
+		New: func() any {
+			src := rand.NewSource(time.Now().UnixNano())
+			return rand.New(src)
+		},
+	}
+	r := randPool.Get().(*rand.Rand)
+	defer randPool.Put(r)
+
+	password := make([]rune, length)
+	for i := range password {
+		password[i] = digitRunes[r.Intn(len(digitRunes))]
+	}
+	return string(password)
 }

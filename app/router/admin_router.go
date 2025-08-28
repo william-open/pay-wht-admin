@@ -139,6 +139,9 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.GET("/merchant/whitelist/list", middleware.HasPerm("merchant:whitelist:list"), (&businesscontroller.MerchantWhitelistController{}).List) // 获取商户白名单列表
 	api.DELETE("/merchant/whitelist/:ids", middleware.HasPerm("merchant:whitelist:remove"), middleware.OperLogMiddleware("删除商户白名单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&businesscontroller.MerchantWhitelistController{}).Remove)
 	api.POST("/merchant/whitelist", middleware.HasPerm("merchant:whitelist:add"), middleware.OperLogMiddleware("新增商户白名单", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantWhitelistController{}).Create)
+	api.PUT("/business/merchant/pwd", middleware.HasPerm("business:merchant:pwd"), middleware.OperLogMiddleware("更新商户密码", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Pwd)
+	api.PUT("/business/merchant/changeStatus", middleware.HasPerm("business:merchant:changeStatus"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).ChangeStatus)
+
 	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
 
 	// 商户账户功能路由

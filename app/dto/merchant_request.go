@@ -21,6 +21,7 @@ type SaveMerchant struct {
 	Remark            string `json:"remark"`
 	Ways              string `json:"ways"`
 	UpstreamId        string `json:"upstreamId"`
+	PayPwd            string `json:"payPwd"`
 }
 
 // MerchantListRequest 商户列表
@@ -56,6 +57,13 @@ type UpdateMerchantRequest struct {
 	//NotifyUrl         string `json:"notifyUrl" binding:"required"`
 	Status string `json:"status"`
 	Remark string `json:"remark"`
+}
+
+// UpdateMerchantPwdRequest 更新商户密码
+type UpdateMerchantPwdRequest struct {
+	MId      int    `json:"mId" binding:"required"`
+	LoginPwd string `json:"loginPwd"`
+	PayPwd   string `json:"payPwd"`
 }
 
 // UpdateWhitelistRequest 更新白名单

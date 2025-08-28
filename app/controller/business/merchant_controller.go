@@ -86,6 +86,8 @@ func (*MerchantController) Create(ctx *gin.Context) {
 	emptyJson := datatypes.JSON([]byte("{}"))
 	param.UpstreamId = string(emptyJson)
 	param.Ways = string(emptyJson)
+	// 随机6位支付密码
+	randomPayPwd := utils.SecurePaymentPassword(6)
 	merchantId, err := (&service.MerchantService{}).CreateMerchant(dto.SaveMerchant{
 		Username:          param.Username,
 		Password:          password.Generate(param.Password),
@@ -104,6 +106,7 @@ func (*MerchantController) Create(ctx *gin.Context) {
 		Remark:       param.Remark,
 		UpstreamId:   param.UpstreamId,
 		Ways:         param.Ways,
+		PayPwd:       password.Generate(randomPayPwd),
 	})
 	if err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
@@ -190,6 +193,30 @@ func (*MerchantController) Update(ctx *gin.Context) {
 		UpdateBy: security.GetAuthUserName(ctx),
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	response.NewSuccess().Json(ctx)
+}
+
+// Pwd 更新商户密码
+func (*MerchantController) Pwd(ctx *gin.Context) {
+
+	var param dto.UpdateMerchantPwdRequest
+
+	if err := ctx.ShouldBind(&param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := validator.UpdateMerchantPwdValidator(param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+	err := (&service.MerchantService{}).UpdateMerchantPwd(param)
+
+	if err != nil {
+		response.NewError().SetMsg("编辑密码失败").Json(ctx)
 		return
 	}
 

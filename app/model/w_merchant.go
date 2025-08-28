@@ -25,6 +25,7 @@ type WMerchant struct {
 	Balance           decimal.Decimal
 	Status            string `gorm:"default:0"`
 	PayType           string `gorm:"default:1"`
+	PayPwd            string
 	userType          string `gorm:"default:1"`
 	CreateBy          string
 	CreateTime        datetime.Datetime `gorm:"autoCreateTime"`

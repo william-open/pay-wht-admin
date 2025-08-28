@@ -1,8 +1,11 @@
 package service
 
 import (
+	"strings"
 	"wht-admin/app/dto"
 	"wht-admin/app/model"
+	"wht-admin/common/password"
+	"wht-admin/common/utils"
 	"wht-admin/framework/dal"
 )
 
@@ -29,6 +32,7 @@ func (s *MerchantService) CreateMerchant(param dto.SaveMerchant) (int, error) {
 		Ways:              param.Ways,
 		UserType:          param.UserType,
 		PayType:           param.PayType,
+		PayPwd:            param.PayPwd,
 	}
 
 	result := dal.Gorm.Model(model.WMerchant{}).Create(m)
@@ -120,4 +124,28 @@ func (s *MerchantService) GetDropDownList() []dto.MerchantDropDownListResponse {
 	query.Find(&merchantList)
 
 	return merchantList
+}
+
+// UpdateMerchantPwd 更新商户密码
+func (s *MerchantService) UpdateMerchantPwd(param dto.UpdateMerchantPwdRequest) error {
+	var originalPwd = param.LoginPwd
+	param.PayPwd = password.Generate(param.PayPwd)
+	param.LoginPwd = password.Generate(param.LoginPwd)
+	err := dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
+		Password: param.LoginPwd,
+		PayPwd:   param.PayPwd,
+	}).Error
+	if err != nil {
+		return err
+	}
+	var salt = utils.RandomString(5)
+	var shopPwd = utils.MakeMd5(strings.Trim(originalPwd, " ") + salt)
+	if err := (&ShopAdminService{}).UpdateShopAdminPwd(dto.UpdateShopAdmin{
+		MId:      uint(param.MId),
+		Password: shopPwd,
+		Salt:     salt,
+	}); err != nil {
+		return err
+	}
+	return nil
 }
