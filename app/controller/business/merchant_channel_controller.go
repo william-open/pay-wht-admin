@@ -146,7 +146,7 @@ func (*MerchantChannelController) Remove(ctx *gin.Context) {
 	response.NewSuccess().Json(ctx)
 }
 
-// 修改商户通道状态
+// ChangeStatus 修改商户通道状态
 func (*MerchantChannelController) ChangeStatus(ctx *gin.Context) {
 
 	var param dto.UpdateMerchantChannelRequest

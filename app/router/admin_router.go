@@ -140,8 +140,6 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.DELETE("/merchant/whitelist/:ids", middleware.HasPerm("merchant:whitelist:remove"), middleware.OperLogMiddleware("删除商户白名单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&businesscontroller.MerchantWhitelistController{}).Remove)
 	api.POST("/merchant/whitelist", middleware.HasPerm("merchant:whitelist:add"), middleware.OperLogMiddleware("新增商户白名单", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantWhitelistController{}).Create)
 	api.PUT("/business/merchant/pwd", middleware.HasPerm("business:merchant:pwd"), middleware.OperLogMiddleware("更新商户密码", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).Pwd)
-	api.PUT("/business/merchant/changeStatus", middleware.HasPerm("business:merchant:changeStatus"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantController{}).ChangeStatus)
-
 	//api.DELETE("/business/merchant/:merchantId", middleware.HasPerm("system:menu:remove"), middleware.OperLogMiddleware("删除菜单", constant.REQUEST_BUSINESS_TYPE_DELETE), (&systemcontroller.MenuController{}).Remove)
 
 	// 商户账户功能路由
@@ -222,7 +220,7 @@ func RegisterAdminGroupApi(api *gin.RouterGroup) {
 	api.GET("/merchant/channel/:id", middleware.HasPerm("merchant:channel:query"), (&businesscontroller.MerchantChannelController{}).Detail) // 获取商户通道详情
 	api.POST("/merchant/channel", middleware.HasPerm("merchant:channel:add"), middleware.OperLogMiddleware("新增商户通道", constant.REQUEST_BUSINESS_TYPE_INSERT), (&businesscontroller.MerchantChannelController{}).Create)
 	api.PUT("/merchant/channel", middleware.HasPerm("merchant:channel:edit"), middleware.OperLogMiddleware("更新商户通道", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).Update)
-	api.PUT("/merchant/channel/changeStatus", middleware.HasPerm("merchant:channel:edit"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).ChangeStatus)
+	api.PUT("/merchant/channel/changeStatus", middleware.HasPerm("merchant:channel:changeStatus"), middleware.OperLogMiddleware("修改商户通道状态", constant.REQUEST_BUSINESS_TYPE_UPDATE), (&businesscontroller.MerchantChannelController{}).ChangeStatus)
 
 	// 上游供应商产品路由
 	api.GET("/upstream/product/list", middleware.HasPerm("upstream:product:list"), (&businesscontroller.UpstreamProductController{}).List)                 // 获取上游供应商产品列表
