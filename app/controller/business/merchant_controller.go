@@ -88,6 +88,7 @@ func (*MerchantController) Create(ctx *gin.Context) {
 	param.Ways = string(emptyJson)
 	// 随机6位支付密码
 	randomPayPwd := utils.SecurePaymentPassword(6)
+	apiKey := utils.GenerateApiKey()
 	merchantId, err := (&service.MerchantService{}).CreateMerchant(dto.SaveMerchant{
 		Username:          param.Username,
 		Password:          password.Generate(param.Password),
@@ -97,7 +98,7 @@ func (*MerchantController) Create(ctx *gin.Context) {
 		AesSecretKey: aesSecretKey,
 		PublicKey:    publicPEM,
 		PrivateKey:   privatePEM,
-		ApiKey:       utils.GenerateApiKey(),
+		ApiKey:       apiKey,
 		AppId:        GenerateWithUUID(""),
 		Status:       param.Status,
 		CreateBy:     security.GetAuthUserName(ctx),
@@ -115,14 +116,19 @@ func (*MerchantController) Create(ctx *gin.Context) {
 	// 创建商户后台管理员账号
 	var salt = utils.RandomString(5)
 	var shopPwd = utils.MakeMd5(strings.Trim(param.Password, " ") + salt)
+	var shopPaySalt = utils.RandomString(5)
+	var shopPayPwd = utils.MakeMd5(strings.Trim(randomPayPwd, " ") + shopPaySalt)
 	if err := (&service.ShopAdminService{}).CreateShopAdmin(dto.SaveShopAdmin{
-		Username: param.Username,
-		Nickname: param.Nickname,
-		AppId:    u.String(),
-		Role:     "1",
-		MId:      uint(merchantId),
-		Password: shopPwd,
-		Salt:     salt,
+		Username:    param.Username,
+		Nickname:    param.Nickname,
+		AppId:       u.String(),
+		Role:        "1",
+		MId:         uint(merchantId),
+		Password:    shopPwd,
+		Salt:        salt,
+		PaySalt:     shopPaySalt,
+		PayPassword: shopPayPwd,
+		ApiKey:      apiKey,
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
@@ -191,6 +197,36 @@ func (*MerchantController) Update(ctx *gin.Context) {
 		Remark:   param.Remark,
 		Status:   param.Status,
 		UpdateBy: security.GetAuthUserName(ctx),
+	}); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	response.NewSuccess().Json(ctx)
+}
+
+// ResetGoogleSecret 重置谷歌验证码
+func (*MerchantController) ResetGoogleSecret(ctx *gin.Context) {
+
+	var param dto.ResetMerchantGoogleSecretRequest
+
+	if err := ctx.ShouldBind(&param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+
+	if err := validator.ResetMerchantGoogleSecretValidator(param); err != nil {
+		response.NewError().SetMsg(err.Error()).Json(ctx)
+		return
+	}
+	merchant := (&service.MerchantService{}).GetMerchantByMerchantId(param.MId)
+	if merchant.MId < 0 {
+		response.NewError().SetMsg("商户不存在").Json(ctx)
+		return
+	}
+
+	if err := (&service.MerchantService{}).ResetMerchantGoogleSecret(dto.ResetMerchantGoogleSecret{
+		MId: param.MId,
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return

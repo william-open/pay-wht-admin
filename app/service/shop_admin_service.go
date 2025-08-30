@@ -33,6 +33,9 @@ func (s *ShopAdminService) CreateShopAdmin(param dto.SaveShopAdmin) error {
 		CreateTime:    param.CreateTime,
 		UpdateTime:    param.UpdateTime,
 		DeleteTime:    param.DeleteTime,
+		PayPassword:   param.PayPassword,
+		PaySalt:       param.PaySalt,
+		ApiKey:        param.ApiKey,
 	}
 
 	if err := tx.Model(model.SAuthAdmin{}).Create(&user).Error; err != nil {
@@ -100,9 +103,29 @@ func (s *ShopAdminService) UpdateShopAdminPwd(param dto.UpdateShopAdmin) error {
 	tx := dal.Gorm.Begin()
 
 	if err := tx.Model(model.SAuthAdmin{}).Where("m_id = ?", param.MId).Where("p_id=?", 0).Updates(&model.SAuthAdmin{
-		Password: param.Password,
-		Salt:     param.Salt,
+		Password:    param.Password,
+		Salt:        param.Salt,
+		PayPassword: param.PayPassword,
+		PaySalt:     param.PaySalt,
 	}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
+}
+
+// ResetGoogleSecret 重置用户谷歌验证码
+func (s *ShopAdminService) ResetGoogleSecret(param dto.ResetMerchantGoogleSecret) error {
+
+	// 方法1：使用map而不是结构体
+	updates := map[string]interface{}{
+		"google_secret":     "",
+		"is_google_enabled": 0,
+	}
+	tx := dal.Gorm.Begin()
+
+	if err := tx.Model(model.SAuthAdmin{}).Where("m_id = ?", param.MId).Where("p_id=?", 0).Updates(updates).Error; err != nil {
 		tx.Rollback()
 		return err
 	}

@@ -80,3 +80,13 @@ func UpdateMerchantPwdValidator(param dto.UpdateMerchantPwdRequest) error {
 
 	return nil
 }
+
+// ResetMerchantGoogleSecretValidator 重置谷歌验证码
+func ResetMerchantGoogleSecretValidator(param dto.ResetMerchantGoogleSecretRequest) error {
+
+	if param.MId <= 0 {
+		return errors.New("参数错误")
+	}
+
+	return nil
+}

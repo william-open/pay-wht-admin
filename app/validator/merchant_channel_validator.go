@@ -37,31 +37,11 @@ func UpdateMerchantChannelValidator(param dto.UpdateMerchantChannelRequest) erro
 		return errors.New("参数错误")
 	}
 
-	if param.SysChannelID < 1 {
-		return errors.New("请选择系统通道编码")
-	}
-
-	if param.UpChannelID < 1 {
-		return errors.New("请选择上游通道编码")
-	}
-
-	if param.Currency == "" {
-		return errors.New("请选择货币")
-	}
-
-	if param.MId < 1 {
-		return errors.New("请选择商户")
-	}
-
-	if len(param.UpstreamProducts) == 0 {
-		return errors.New("请选择上游通道产品")
-	}
-
 	return nil
 }
 
-// 修改商户通道状态验证
-func ChangeMerchantChannelStatusValidator(param dto.UpdateMerchantChannelRequest) error {
+// ChangeMerchantChannelStatusValidator 修改商户通道状态验证
+func ChangeMerchantChannelStatusValidator(param dto.UpdateMerchantChannelStatusRequest) error {
 
 	if param.ID <= 0 {
 		return errors.New("参数错误")

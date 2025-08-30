@@ -24,6 +24,11 @@ type SaveMerchant struct {
 	PayPwd            string `json:"payPwd"`
 }
 
+// ResetMerchantGoogleSecret 重置谷歌验证码
+type ResetMerchantGoogleSecret struct {
+	MId int `json:"mId" binding:"required"`
+}
+
 // MerchantListRequest 商户列表
 type MerchantListRequest struct {
 	PageRequest
@@ -72,4 +77,9 @@ type UpdateWhitelistRequest struct {
 	ApiIp      string `json:"apiIp" binding:"required"`
 	LoginApiIp string `json:"loginApiIp" binding:"required"`
 	ApiDomain  string `json:"apiDomain" binding:"required"`
+}
+
+// ResetMerchantGoogleSecretRequest 重置谷歌验证码
+type ResetMerchantGoogleSecretRequest struct {
+	MId int `json:"mId" binding:"required"`
 }

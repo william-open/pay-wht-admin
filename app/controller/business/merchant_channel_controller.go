@@ -7,7 +7,6 @@ import (
 	"wht-admin/app/security"
 	"wht-admin/app/service"
 	"wht-admin/app/validator"
-	"wht-admin/common/password"
 	"wht-admin/framework/response"
 )
 
@@ -32,7 +31,7 @@ func (*MerchantChannelController) Detail(ctx *gin.Context) {
 
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	merchant := (&service.MerchantChannelService{}).GetMerchantByMerchantChannelId(id)
+	merchant := (&service.MerchantChannelService{}).GetDetailByMerchantChannelId(id)
 
 	response.NewSuccess().SetData("data", merchant).Json(ctx)
 }
@@ -82,39 +81,24 @@ func (*MerchantChannelController) Create(ctx *gin.Context) {
 // Update 更新商户通道
 func (*MerchantChannelController) Update(ctx *gin.Context) {
 
-	var param dto.UpdateMerchantRequest
+	var param dto.UpdateMerchantChannelRequest
 
 	if err := ctx.ShouldBind(&param); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
 
-	if err := validator.UpdateMerchantValidator(param); err != nil {
+	if err := validator.UpdateMerchantChannelValidator(param); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
-	merchant := (&service.MerchantService{}).GetMerchantByMerchantName(param.Username)
-	if merchant.MId > 0 && merchant.MId != param.MId {
-		response.NewError().SetMsg("修改商户账号" + param.Username + "失败，商户账号已存在").Json(ctx)
-		return
-	}
-	var editPassword = ""
-	if param.Password == "" {
-		editPassword = merchant.Password
-	} else {
-		editPassword = password.Generate(param.Password)
-	}
 
-	if err := (&service.MerchantService{}).UpdateMerchant(dto.SaveMerchant{
-		MId:      param.MId,
-		Username: param.Username,
-		Password: editPassword,
-		Nickname: param.Nickname,
-		//CallbackSecretKey: param.CallbackSecretKey,
-		//NotifyUrl:         param.NotifyUrl,
-		Remark:   param.Remark,
-		Status:   param.Status,
-		UpdateBy: security.GetAuthUserName(ctx),
+	if err := (&service.MerchantChannelService{}).UpdateMerchantChannel(dto.UpdateMerchantChannel{
+		DefaultRate: param.DefaultRate,
+		SingleFee:   param.SingleFee,
+		Weight:      param.Weight,
+		OrderRange:  param.OrderRange,
+		ID:          param.ID,
 	}); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
@@ -126,19 +110,9 @@ func (*MerchantChannelController) Update(ctx *gin.Context) {
 // Remove 删除商户通道
 func (*MerchantChannelController) Remove(ctx *gin.Context) {
 
-	menuId, _ := strconv.Atoi(ctx.Param("menuId"))
+	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	if (&service.MenuService{}).MenuHasChildren(menuId) {
-		response.NewError().SetMsg("存在子菜单，不允许删除").Json(ctx)
-		return
-	}
-
-	if (&service.MenuService{}).MenuExistRole(menuId) {
-		response.NewError().SetMsg("菜单已分配，不允许删除").Json(ctx)
-		return
-	}
-
-	if err := (&service.MenuService{}).DeleteMenu(menuId); err != nil {
+	if err := (&service.MerchantChannelService{}).RemoveMerchantChannel(id); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
@@ -149,7 +123,7 @@ func (*MerchantChannelController) Remove(ctx *gin.Context) {
 // ChangeStatus 修改商户通道状态
 func (*MerchantChannelController) ChangeStatus(ctx *gin.Context) {
 
-	var param dto.UpdateMerchantChannelRequest
+	var param dto.UpdateMerchantChannelStatusRequest
 
 	if err := ctx.ShouldBind(&param); err != nil {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
@@ -160,7 +134,7 @@ func (*MerchantChannelController) ChangeStatus(ctx *gin.Context) {
 		response.NewError().SetMsg(err.Error()).Json(ctx)
 		return
 	}
-	if err := (&service.MerchantChannelService{}).UpdateMerchantChannel(dto.SaveMerchantChannel{
+	if err := (&service.MerchantChannelService{}).UpdateMerchantChannelStatus(dto.UpdateMerchantChannelStatus{
 		ID:     param.ID,
 		Status: param.Status,
 	}); err != nil {

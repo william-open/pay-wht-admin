@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"strings"
 	"wht-admin/app/dto"
 	"wht-admin/app/model"
@@ -61,6 +62,19 @@ func (s *MerchantService) UpdateMerchant(param dto.SaveMerchant) error {
 		UserType:          param.UserType,
 		PayType:           param.PayType,
 	}).Error
+}
+
+// ResetMerchantGoogleSecret 重置商户谷歌验证码
+func (s *MerchantService) ResetMerchantGoogleSecret(param dto.ResetMerchantGoogleSecret) error {
+
+	if err := (&ShopAdminService{}).ResetGoogleSecret(dto.ResetMerchantGoogleSecret{
+		MId: param.MId,
+	}); err != nil {
+
+		return err
+	}
+
+	return nil
 }
 
 // GetMerchantList 商户列表
@@ -129,6 +143,7 @@ func (s *MerchantService) GetDropDownList() []dto.MerchantDropDownListResponse {
 // UpdateMerchantPwd 更新商户密码
 func (s *MerchantService) UpdateMerchantPwd(param dto.UpdateMerchantPwdRequest) error {
 	var originalPwd = param.LoginPwd
+	var originalPayPwd = param.PayPwd
 	param.PayPwd = password.Generate(param.PayPwd)
 	param.LoginPwd = password.Generate(param.LoginPwd)
 	err := dal.Gorm.Model(model.WMerchant{}).Where("m_id = ?", param.MId).Updates(&model.WMerchant{
@@ -140,10 +155,16 @@ func (s *MerchantService) UpdateMerchantPwd(param dto.UpdateMerchantPwdRequest) 
 	}
 	var salt = utils.RandomString(5)
 	var shopPwd = utils.MakeMd5(strings.Trim(originalPwd, " ") + salt)
+	var shopPaySalt = utils.RandomString(5)
+	var shopPayPwd = utils.MakeMd5(strings.Trim(originalPayPwd, " ") + shopPaySalt)
+
+	log.Printf("盐值: %+v,支付密码: %+v", shopPaySalt, shopPayPwd)
 	if err := (&ShopAdminService{}).UpdateShopAdminPwd(dto.UpdateShopAdmin{
-		MId:      uint(param.MId),
-		Password: shopPwd,
-		Salt:     salt,
+		MId:         uint(param.MId),
+		Password:    shopPwd,
+		Salt:        salt,
+		PaySalt:     shopPaySalt,
+		PayPassword: shopPayPwd,
 	}); err != nil {
 		return err
 	}

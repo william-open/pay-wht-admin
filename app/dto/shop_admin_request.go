@@ -22,13 +22,18 @@ type SaveShopAdmin struct {
 	CreateTime    int64  `gorm:"autoCreateTime;not null;comment:'创建时间'"`
 	UpdateTime    int64  `gorm:"autoUpdateTime;not null;comment:'更新时间'"`
 	DeleteTime    int64  `gorm:"not null;default:0;comment:'删除时间'"`
+	PayPassword   string `gorm:"not null;default:'';comment:'用户支付密码'"`
+	PaySalt       string `gorm:"not null;default:'';comment:'用户支付盐值'"`
+	ApiKey        string `gorm:"not null;default:'';comment:'APIKEY'"`
 }
 
 // 更新用户信息
 type UpdateShopAdmin struct {
-	Password string `json:"password"`
-	Salt     string `json:"salt"`
-	MId      uint   `json:"mId"`
+	Password    string `json:"password"`
+	Salt        string `json:"salt"`
+	PayPassword string `json:"payPassword"`
+	PaySalt     string `json:"paySalt"`
+	MId         uint   `json:"mId"`
 }
 
 // 新增用户
